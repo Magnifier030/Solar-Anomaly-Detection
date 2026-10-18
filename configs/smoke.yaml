@@ -1,0 +1,24 @@
+name: synthetic-smoke
+task:
+  factory: research_training.examples.regression:create_task
+  samples: 128
+  features: 4
+  hidden_size: 16
+training:
+  seed: 7
+  batch_size: 16
+  max_epochs: 8
+  patience: 4
+  learning_rate: 0.01
+  gradient_clip: 1.0
+  checkpoint_every_steps: 3
+  selection_metric: loss
+  selection_mode: min
+  amp: true
+tracking:
+  wandb:
+    mode: disabled
+    project: research-training
+    system_monitoring: true
+    tags: [template, smoke]
+

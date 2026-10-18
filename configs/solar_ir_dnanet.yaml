@@ -1,0 +1,33 @@
+name: solar-ir-dnanet-from-scratch
+task:
+  factory: solar_ir.task:create_task
+  dataset_root: data/raw/datasets/9_16_train_set
+  groups_csv: data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv
+  supervision: polygon_mask
+  image_size: 256
+  validation_fraction: 0.2
+  metric_threshold: 0.5
+  model:
+    factory: solar_ir.models.dnanet:create_model
+    input_channels: 1
+    num_classes: 1
+    backbone: resnet_18
+    channel_size: two
+    deep_supervision: true
+training:
+  seed: 7
+  batch_size: 4
+  max_epochs: 150
+  patience: 25
+  learning_rate: 0.0001
+  gradient_clip: 1.0
+  checkpoint_every_steps: 100
+  selection_metric: F1_TIoU
+  selection_mode: max
+  amp: true
+tracking:
+  wandb:
+    mode: disabled
+    project: solar-ir-competition
+    system_monitoring: true
+    tags: [solar-ir, thermal, segmentation, dnanet, from-scratch]

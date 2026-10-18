@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "research-training-template"
+version = "0.1.0"
+description = "Reusable, resumable PyTorch research training template"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "pyyaml>=6.0", "python-dotenv>=1.0"]
+
+[project.optional-dependencies]
+torch = ["torch>=2.3"]
+eval = ["shapely>=2.0", "opencv-python-headless>=4.10"]
+wandb = ["wandb>=0.22.3"]
+drive = ["google-api-python-client>=2.130", "google-auth>=2.30"]
+dev = ["mypy>=1.10", "pytest>=8.2", "ruff>=0.5", "types-PyYAML>=6.0"]
+
+[project.scripts]
+research-train = "research_training.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/research_training", "src/solar_ir"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = ["outputs", "data"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["research_training"]
+
+[[tool.mypy.overrides]]
+module = ["yaml", "google", "google.*", "googleapiclient", "googleapiclient.*"]
+ignore_missing_imports = true

@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Research data and generated artifacts
+data/raw/
+data/processed/
+data/manifests/
+outputs/
+experiments/
+*.pt
+*.pth
+*.ckpt
+*.tar
+*.tar.gz
+*.zip
+
+# Experiment tracking
+wandb/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
