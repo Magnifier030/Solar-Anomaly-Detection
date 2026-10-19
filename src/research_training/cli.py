@@ -46,6 +46,9 @@ def _override(config: dict[str, Any], args: argparse.Namespace) -> None:
     entity = os.getenv("WANDB_ENTITY")
     if entity and not settings.get("entity"):
         settings["entity"] = entity
+    project = os.getenv("WANDB_PROJECT")
+    if project and not getattr(args, "wandb_project", None):
+        settings["project"] = project
 
 
 def _open_dashboard(run_name: str | None, project: str | None) -> None:
