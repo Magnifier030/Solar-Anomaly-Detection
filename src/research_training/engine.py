@@ -109,6 +109,24 @@ def _write_logs(directory: Path, history: list[dict[str, Any]]) -> None:
         for event in history:
             stream.write(json.dumps(event, ensure_ascii=False) + "\n")
     atomic_replace(temporary, directory / "train_log.jsonl")
+    temporary = directory / "train.log.tmp"
+    with temporary.open("w", encoding="utf-8") as stream:
+        for event in history:
+            fields = [f"kind={event.get('kind', 'event')}"]
+            for key in (
+                "epoch",
+                "batch",
+                "optimizer_step",
+                "train/loss",
+                "validation/loss",
+                "validation/f1_tiou",
+                "validation/mean_iou",
+                "validation/dice",
+            ):
+                if event.get(key) is not None:
+                    fields.append(f"{key}={event[key]}")
+            stream.write(" ".join(fields) + "\n")
+    atomic_replace(temporary, directory / "train.log")
 
 
 def _prepare_artifacts(config: dict[str, Any], store: ArtifactStore) -> list[dict[str, Any]]:

@@ -28,7 +28,7 @@ overlap、recall/precision aggregation 與 duplicate prediction handling；`F1_T
 - 每隔 N optimizer steps 與 epoch 結束保存；可由中斷的 batch 繼續。若 task 使用隨機 sampler，應像範例一樣提供 `train_generator`；需要 bitwise resume 時請使用 `num_workers=0`，或讓 worker-side augmentation 本身可重播。
 - Google Drive 雙後端：推薦既有登入的 `rclone`，或 Application Default Credentials 的 Drive API。每個 checkpoint 使用不可變版本檔名，再更新含 SHA-256 的 `latest.json` 指標；新機器會下載並驗證後續訓。
 - W&B `online`、`offline`、`disabled`；相同 run name 產生固定 run ID 並使用 `resume="allow"`。訓練設定、曲線、系統資源與 final summary 可在 W&B 前端查看。
-- 本機 `history.json`、逐事件 `train_log.jsonl`、`metrics.json`、`resolved_config.json`、`data_manifest.json`、`best.pt`，不把雲端服務當成唯一紀錄。
+- 本機 `history.json`、逐事件 `train_log.jsonl`、可直接閱讀的 `train.log`、`metrics.json`、`resolved_config.json`、`data_manifest.json`、`best.pt`，不把雲端服務當成唯一紀錄。
 - CPU/CUDA auto selection、AMP、gradient clipping、min/max checkpoint selection、early stopping。
 - iteration duration、throughput、learning rate、ETA、PyTorch GPU memory 與 `nvidia-smi` board telemetry。
 

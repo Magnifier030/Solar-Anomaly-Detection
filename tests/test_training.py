@@ -40,9 +40,18 @@ def test_smoke_run_writes_reproducibility_bundle(tmp_path: Path) -> None:
     run_dir = tmp_path / "test-run"
     assert result["status"] == "complete"
     assert result["validation"]["loss"] >= 0
-    assert {"best.pt", "latest.pt", "metrics.json", "resolved_config.json", "history.json"} <= {
+    assert {
+        "best.pt",
+        "latest.pt",
+        "metrics.json",
+        "resolved_config.json",
+        "history.json",
+        "train_log.jsonl",
+        "train.log",
+    } <= {
         path.name for path in run_dir.iterdir()
     }
+    assert "kind=iteration" in (run_dir / "train.log").read_text(encoding="utf-8")
     checkpoint = torch.load(run_dir / "latest.pt", map_location="cpu", weights_only=False)
     assert checkpoint["completed"] is True
     assert checkpoint["rng"]["python"]
