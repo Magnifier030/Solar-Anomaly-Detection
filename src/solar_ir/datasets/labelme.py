@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import csv
 import json
+import random
 from pathlib import Path
 from typing import Any
 
@@ -17,17 +18,52 @@ from PIL import Image, ImageDraw
 from torch.utils.data import Dataset
 
 
+def _frames(image_dir: Path, label_dir: Path) -> list[str]:
+    return sorted(
+        path.stem
+        for path in image_dir.glob("*.jpg")
+        if (label_dir / f"{path.stem}.json").exists()
+    )
+
+
+def _has_hotspot(label_dir: Path, frame: str) -> bool:
+    annotation = json.loads((label_dir / f"{frame}.json").read_text(encoding="utf-8"))
+    return any(shape.get("label") == "hotspot" for shape in annotation.get("shapes", []))
+
+
 def build_group_split(
     image_dir: Path,
     label_dir: Path,
     groups_csv: Path,
     validation_fraction: float = 0.2,
+    split_strategy: str = "group",
+    seed: int = 42,
 ) -> tuple[list[Path], list[Path]]:
-    """Split frames by group, never by individual image."""
+    """Split frames by group, or stratified by frame for development only."""
     with groups_csv.open(encoding="utf-8", newline="") as stream:
         rows = list(csv.DictReader(stream))
     group_by_frame = {str(row["frame_id"]): str(row["group"]) for row in rows}
-    frames = sorted(path.stem for path in image_dir.glob("*.jpg") if (label_dir / f"{path.stem}.json").exists())
+    frames = _frames(image_dir, label_dir)
+    if split_strategy == "random_stratified":
+        positive = [frame for frame in frames if _has_hotspot(label_dir, frame)]
+        normal = [frame for frame in frames if frame not in set(positive)]
+        generator = random.Random(seed)
+        generator.shuffle(positive)
+        generator.shuffle(normal)
+        validation_count = max(1, round(len(frames) * validation_fraction))
+        positive_count = round(len(positive) * validation_fraction)
+        normal_count = validation_count - positive_count
+        validation = positive[:positive_count] + normal[:normal_count]
+        if len(validation) < validation_count:
+            remaining = [frame for frame in frames if frame not in set(validation)]
+            generator.shuffle(remaining)
+            validation.extend(remaining[: validation_count - len(validation)])
+        validation_set = set(validation)
+        train_paths = [image_dir / f"{frame}.jpg" for frame in frames if frame not in validation_set]
+        validation_paths = [image_dir / f"{frame}.jpg" for frame in frames if frame in validation_set]
+        return train_paths, validation_paths
+    if split_strategy != "group":
+        raise ValueError("split_strategy must be group or random_stratified")
     groups = sorted({group_by_frame.get(frame, "ungrouped") for frame in frames})
     target = max(1, round(len(frames) * validation_fraction))
     group_frames = {
@@ -38,8 +74,7 @@ def build_group_split(
     for group, group_frame_names in group_frames.items():
         positives = 0
         for frame in group_frame_names:
-            annotation = json.loads((label_dir / f"{frame}.json").read_text(encoding="utf-8"))
-            positives += any(shape.get("label") != "solar_panel" for shape in annotation.get("shapes", []))
+            positives += _has_hotspot(label_dir, frame)
         if positives:
             positive_groups.append(group)
 

@@ -4,6 +4,7 @@ task:
   dataset_root: data/raw/datasets/9_16_train_set
   groups_csv: data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv
   supervision: polygon_mask
+  split_strategy: group
   image_size: 256
   validation_fraction: 0.2
   metric_threshold: 0.5

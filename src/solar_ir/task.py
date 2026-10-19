@@ -25,7 +25,15 @@ class SolarIRTask:
         image_dir = dataset_root / "train/IR/image"
         label_dir = dataset_root / "train/IR/label"
         groups = Path(str(task_config.get("groups_csv", "data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv")))
-        train_paths, validation_paths = build_group_split(image_dir, label_dir, groups, float(task_config.get("validation_fraction", 0.2)))
+        split_strategy = str(task_config.get("split_strategy", "group"))
+        train_paths, validation_paths = build_group_split(
+            image_dir,
+            label_dir,
+            groups,
+            float(task_config.get("validation_fraction", 0.2)),
+            split_strategy=split_strategy,
+            seed=int(config["training"].get("seed", 42)),
+        )
         image_size = int(task_config.get("image_size", 256))
         train_dataset = ThermalPolygonDataset(train_paths, label_dir, image_size)
         validation_dataset = ThermalPolygonDataset(validation_paths, label_dir, image_size)
@@ -36,7 +44,7 @@ class SolarIRTask:
         optimizer = torch.optim.AdamW(model.parameters(), lr=float(config["training"].get("learning_rate", 1e-4)))
         return TaskBundle(model, optimizer, train_loader, validation_loader, {
             "modality": "IR", "anomaly_label": "hotspot", "train_samples": len(train_dataset),
-            "validation_samples": len(validation_dataset), "split": "group-based",
+            "validation_samples": len(validation_dataset), "split": split_strategy,
         }, generator)
 
     def training_loss(self, model: nn.Module, batch: Any, device: torch.device) -> tuple[torch.Tensor, dict[str, float]]:
