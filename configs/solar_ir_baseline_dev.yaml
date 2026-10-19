@@ -8,6 +8,12 @@ task:
   validation_fraction: 0.2
   image_size: 256
   metric_threshold: 0.5
+  augmentation:
+    enabled: true
+    horizontal_flip_prob: 0.5
+    scale_min: 0.5
+    scale_max: 2.0
+    gaussian_blur_prob: 0.5
   model:
     factory: solar_ir.models.simple_unet:create_model
     base_channels: 16

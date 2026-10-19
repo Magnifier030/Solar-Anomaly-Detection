@@ -38,7 +38,14 @@ class SolarIRTask:
             seed=int(config["training"].get("seed", 42)),
         )
         image_size = int(task_config.get("image_size", 256))
-        train_dataset = ThermalPolygonDataset(train_paths, label_dir, image_size)
+        augmentation = dict(task_config.get("augmentation", {}))
+        train_dataset = ThermalPolygonDataset(
+            train_paths,
+            label_dir,
+            image_size,
+            augment=bool(augmentation.get("enabled", False)),
+            augmentation=augmentation,
+        )
         validation_dataset = ThermalPolygonDataset(validation_paths, label_dir, image_size)
         generator = torch.Generator().manual_seed(int(config["training"].get("seed", 42)))
         train_loader = DataLoader(train_dataset, batch_size=int(config["training"].get("batch_size", 8)), shuffle=True, generator=generator, num_workers=0)

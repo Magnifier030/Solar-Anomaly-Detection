@@ -14,7 +14,7 @@ from typing import Any
 
 import numpy as np
 import torch
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter, ImageOps
 from torch.utils.data import Dataset
 
 
@@ -103,10 +103,20 @@ def build_group_split(
 class ThermalPolygonDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
     """Return one-channel IR tensor and a binary hotspot mask."""
 
-    def __init__(self, image_paths: list[Path], label_dir: Path, image_size: int) -> None:
+    def __init__(
+        self,
+        image_paths: list[Path],
+        label_dir: Path,
+        image_size: int,
+        *,
+        augment: bool = False,
+        augmentation: dict[str, Any] | None = None,
+    ) -> None:
         self.image_paths = image_paths
         self.label_dir = label_dir
         self.image_size = image_size
+        self.augment = augment
+        self.augmentation = augmentation or {}
 
     def __len__(self) -> int:
         return len(self.image_paths)
@@ -115,10 +125,6 @@ class ThermalPolygonDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
         image_path = self.image_paths[index]
         image = Image.open(image_path).convert("L")
         original_size = image.size
-        image = image.resize((self.image_size, self.image_size), Image.Resampling.BILINEAR)
-        array = np.asarray(image, dtype=np.float32) / 255.0
-        tensor = torch.from_numpy(array).unsqueeze(0)
-
         mask_image = Image.new("L", original_size, 0)
         draw = ImageDraw.Draw(mask_image)
         annotation = json.loads((self.label_dir / f"{image_path.stem}.json").read_text(encoding="utf-8"))
@@ -128,6 +134,52 @@ class ThermalPolygonDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
             points = [tuple(float(value) for value in point) for point in shape.get("points", [])]
             if len(points) >= 3:
                 draw.polygon(points, fill=255)
-        mask = mask_image.resize((self.image_size, self.image_size), Image.Resampling.NEAREST)
-        mask_tensor = torch.from_numpy(np.asarray(mask, dtype=np.float32) / 255.0).unsqueeze(0)
+        if self.augment:
+            image, mask_image = self._training_transform(image, mask_image)
+        else:
+            image = image.resize((self.image_size, self.image_size), Image.Resampling.BILINEAR)
+            mask_image = mask_image.resize((self.image_size, self.image_size), Image.Resampling.NEAREST)
+        array = np.asarray(image, dtype=np.float32) / 255.0
+        tensor = torch.from_numpy(array).unsqueeze(0)
+        mask_tensor = torch.from_numpy(np.asarray(mask_image, dtype=np.float32) / 255.0).unsqueeze(0)
         return tensor, mask_tensor
+
+    def _training_transform(self, image: Image.Image, mask: Image.Image) -> tuple[Image.Image, Image.Image]:
+        import random
+
+        if random.random() < float(self.augmentation.get("horizontal_flip_prob", 0.5)):
+            image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+            mask = mask.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+
+        scale_min = float(self.augmentation.get("scale_min", 0.5))
+        scale_max = float(self.augmentation.get("scale_max", 2.0))
+        long_size = random.randint(
+            max(1, int(self.image_size * scale_min)),
+            max(1, int(self.image_size * scale_max)),
+        )
+        width, height = image.size
+        if height > width:
+            resized_height = long_size
+            resized_width = max(1, int(width * long_size / height + 0.5))
+        else:
+            resized_width = long_size
+            resized_height = max(1, int(height * long_size / width + 0.5))
+        image = image.resize((resized_width, resized_height), Image.Resampling.BILINEAR)
+        mask = mask.resize((resized_width, resized_height), Image.Resampling.NEAREST)
+
+        crop_size = self.image_size
+        pad_width = max(0, crop_size - resized_width)
+        pad_height = max(0, crop_size - resized_height)
+        if pad_width or pad_height:
+            image = ImageOps.expand(image, border=(0, 0, pad_width, pad_height), fill=0)
+            mask = ImageOps.expand(mask, border=(0, 0, pad_width, pad_height), fill=0)
+        width, height = image.size
+        left = random.randint(0, max(0, width - crop_size))
+        top = random.randint(0, max(0, height - crop_size))
+        image = image.crop((left, top, left + crop_size, top + crop_size))
+        mask = mask.crop((left, top, left + crop_size, top + crop_size))
+
+        blur_probability = float(self.augmentation.get("gaussian_blur_prob", 0.5))
+        if random.random() < blur_probability:
+            image = image.filter(ImageFilter.GaussianBlur(radius=random.random()))
+        return image, mask
