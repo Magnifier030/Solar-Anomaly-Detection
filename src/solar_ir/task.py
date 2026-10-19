@@ -25,7 +25,7 @@ class SolarIRTask:
         image_dir = dataset_root / "train/IR/image"
         label_dir = dataset_root / "train/IR/label"
         groups = Path(str(task_config.get("groups_csv", "data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv")))
-        split_strategy = str(task_config.get("split_strategy", "group"))
+        split_strategy = str(task_config.get("split_strategy", "random_stratified"))
         train_paths, validation_paths = build_group_split(
             image_dir,
             label_dir,
