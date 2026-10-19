@@ -30,13 +30,34 @@ def build_group_split(
     frames = sorted(path.stem for path in image_dir.glob("*.jpg") if (label_dir / f"{path.stem}.json").exists())
     groups = sorted({group_by_frame.get(frame, "ungrouped") for frame in frames})
     target = max(1, round(len(frames) * validation_fraction))
-    validation_groups: set[str] = set()
-    count = 0
-    for group in reversed(groups):
-        validation_groups.add(group)
-        count += sum(group_by_frame.get(frame, "ungrouped") == group for frame in frames)
+    group_frames = {
+        group: [frame for frame in frames if group_by_frame.get(frame, "ungrouped") == group]
+        for group in groups
+    }
+    positive_groups = []
+    for group, group_frame_names in group_frames.items():
+        positives = 0
+        for frame in group_frame_names:
+            annotation = json.loads((label_dir / f"{frame}.json").read_text(encoding="utf-8"))
+            positives += any(shape.get("label") != "solar_panel" for shape in annotation.get("shapes", []))
+        if positives:
+            positive_groups.append(group)
+
+    # Keep the split group-disjoint, but do not accidentally create a
+    # validation set containing only normal frames. The closest positive group
+    # to the requested size is a deterministic and leakage-safe baseline.
+    candidates = positive_groups or groups
+    validation_groups: set[str] = {
+        min(candidates, key=lambda group: (abs(len(group_frames[group]) - target), group))
+    }
+    count = len(group_frames[next(iter(validation_groups))])
+    for group in sorted(groups, key=lambda item: (abs(len(group_frames[item]) - max(0, target - count)), item)):
+        if group in validation_groups:
+            continue
         if count >= target:
             break
+        validation_groups.add(group)
+        count += len(group_frames[group])
     train = [image_dir / f"{frame}.jpg" for frame in frames if group_by_frame.get(frame, "ungrouped") not in validation_groups]
     validation = [image_dir / f"{frame}.jpg" for frame in frames if group_by_frame.get(frame, "ungrouped") in validation_groups]
     if not train or not validation:
