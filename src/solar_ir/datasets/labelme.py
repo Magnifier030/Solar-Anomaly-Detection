@@ -36,7 +36,7 @@ def build_group_split(
     label_dir: Path,
     groups_csv: Path,
     validation_fraction: float = 0.2,
-    split_strategy: str = "random_stratified",
+    split_strategy: str = "group",
     seed: int = 42,
 ) -> tuple[list[Path], list[Path]]:
     """Split frames by group, or stratified by frame for development only."""
