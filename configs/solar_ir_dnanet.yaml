@@ -16,7 +16,7 @@ task:
     deep_supervision: true
 training:
   seed: 7
-  batch_size: 4
+  batch_size: 64
   max_epochs: 150
   patience: 25
   learning_rate: 0.0001
