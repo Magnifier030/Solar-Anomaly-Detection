@@ -107,14 +107,17 @@ class ThermalPolygonDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
         self,
         image_paths: list[Path],
         label_dir: Path,
-        image_size: int,
+        image_size: int | tuple[int, int],
         *,
         augment: bool = False,
         augmentation: dict[str, Any] | None = None,
     ) -> None:
         self.image_paths = image_paths
         self.label_dir = label_dir
-        self.image_size = image_size
+        if isinstance(image_size, int):
+            self.image_size = (image_size, image_size)
+        else:
+            self.image_size = tuple(image_size)
         self.augment = augment
         self.augmentation = augmentation or {}
 
@@ -137,8 +140,8 @@ class ThermalPolygonDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
         if self.augment:
             image, mask_image = self._training_transform(image, mask_image)
         else:
-            image = image.resize((self.image_size, self.image_size), Image.Resampling.BILINEAR)
-            mask_image = mask_image.resize((self.image_size, self.image_size), Image.Resampling.NEAREST)
+            image = image.resize(self.image_size, Image.Resampling.BILINEAR)
+            mask_image = mask_image.resize(self.image_size, Image.Resampling.NEAREST)
         array = np.asarray(image, dtype=np.float32) / 255.0
         tensor = torch.from_numpy(array).unsqueeze(0)
         mask_tensor = torch.from_numpy(np.asarray(mask_image, dtype=np.float32) / 255.0).unsqueeze(0)
@@ -151,11 +154,13 @@ class ThermalPolygonDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
             image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
             mask = mask.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
+        crop_width, crop_height = self.image_size
         scale_min = float(self.augmentation.get("scale_min", 0.5))
         scale_max = float(self.augmentation.get("scale_max", 2.0))
+        base_long_size = max(crop_width, crop_height)
         long_size = random.randint(
-            max(1, int(self.image_size * scale_min)),
-            max(1, int(self.image_size * scale_max)),
+            max(1, int(base_long_size * scale_min)),
+            max(1, int(base_long_size * scale_max)),
         )
         width, height = image.size
         if height > width:
@@ -167,17 +172,16 @@ class ThermalPolygonDataset(Dataset[tuple[torch.Tensor, torch.Tensor]]):
         image = image.resize((resized_width, resized_height), Image.Resampling.BILINEAR)
         mask = mask.resize((resized_width, resized_height), Image.Resampling.NEAREST)
 
-        crop_size = self.image_size
-        pad_width = max(0, crop_size - resized_width)
-        pad_height = max(0, crop_size - resized_height)
+        pad_width = max(0, crop_width - resized_width)
+        pad_height = max(0, crop_height - resized_height)
         if pad_width or pad_height:
             image = ImageOps.expand(image, border=(0, 0, pad_width, pad_height), fill=0)
             mask = ImageOps.expand(mask, border=(0, 0, pad_width, pad_height), fill=0)
         width, height = image.size
-        left = random.randint(0, max(0, width - crop_size))
-        top = random.randint(0, max(0, height - crop_size))
-        image = image.crop((left, top, left + crop_size, top + crop_size))
-        mask = mask.crop((left, top, left + crop_size, top + crop_size))
+        left = random.randint(0, max(0, width - crop_width))
+        top = random.randint(0, max(0, height - crop_height))
+        image = image.crop((left, top, left + crop_width, top + crop_height))
+        mask = mask.crop((left, top, left + crop_width, top + crop_height))
 
         blur_probability = float(self.augmentation.get("gaussian_blur_prob", 0.5))
         if random.random() < blur_probability:

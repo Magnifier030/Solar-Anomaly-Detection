@@ -5,7 +5,7 @@ task:
   groups_csv: data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv
   supervision: polygon_mask
   split_strategy: group
-  image_size: 256
+  image_size: [640, 512]
   validation_fraction: 0.2
   metric_threshold: 0.5
   augmentation:
@@ -20,7 +20,7 @@ task:
 training:
   seed: 7
   loss: dice
-  batch_size: 8
+  batch_size: 1
   max_epochs: 5
   patience: 5
   learning_rate: 0.0001

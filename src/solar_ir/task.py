@@ -37,7 +37,13 @@ class SolarIRTask:
             split_strategy=split_strategy,
             seed=int(config["training"].get("seed", 42)),
         )
-        image_size = int(task_config.get("image_size", 256))
+        raw_image_size = task_config.get("image_size", 256)
+        if isinstance(raw_image_size, (list, tuple)):
+            image_size: int | tuple[int, int] = tuple(int(value) for value in raw_image_size)
+            if len(image_size) != 2:
+                raise ValueError("task.image_size list must contain [width, height]")
+        else:
+            image_size = int(raw_image_size)
         augmentation = dict(task_config.get("augmentation", {}))
         train_dataset = ThermalPolygonDataset(
             train_paths,
