@@ -19,6 +19,9 @@ from solar_ir.postprocess import mask_to_polygons
 class SolarIRTask:
     def build(self, config: dict[str, Any], device: torch.device) -> TaskBundle:
         task_config = config["task"]
+        self.loss_name = str(config["training"].get("loss", "dice"))
+        if self.loss_name not in {"dice", "bce", "bce_dice", "soft_iou"}:
+            raise ValueError("training.loss must be dice, bce, bce_dice or soft_iou")
         self.metric_threshold = float(task_config.get("metric_threshold", 0.5))
         self.localization_metric = OfficialLocalizationMetric(("hotspot",))
         dataset_root = Path(str(task_config.get("dataset_root", "data/raw/datasets/9_16_train_set")))
@@ -45,6 +48,7 @@ class SolarIRTask:
         return TaskBundle(model, optimizer, train_loader, validation_loader, {
             "modality": "IR", "anomaly_label": "hotspot", "train_samples": len(train_dataset),
             "validation_samples": len(validation_dataset), "split": split_strategy,
+            "loss": self.loss_name,
         }, generator)
 
     def training_loss(self, model: nn.Module, batch: Any, device: torch.device) -> tuple[torch.Tensor, dict[str, float]]:
@@ -52,15 +56,43 @@ class SolarIRTask:
         raw_output = model(images)
         logits_list = raw_output if isinstance(raw_output, list) else [raw_output]
         logits = logits_list[-1]
-        bce = nn.functional.binary_cross_entropy_with_logits(logits, masks)
-        probabilities = torch.sigmoid(logits)
-        intersection = (probabilities * masks).sum()
-        dice_loss = 1 - (2 * intersection + 1) / (probabilities.sum() + masks.sum() + 1)
-        deep_loss = sum(
+        bce_values = [
             nn.functional.binary_cross_entropy_with_logits(prediction, masks)
             for prediction in logits_list
-        ) / len(logits_list)
-        return deep_loss + dice_loss, {"bce": float(bce.detach()), "dice_loss": float(dice_loss.detach())}
+        ]
+        dice_values = [self._soft_dice_loss(prediction, masks) for prediction in logits_list]
+        soft_iou_values = [self._soft_iou_loss(prediction, masks) for prediction in logits_list]
+        if self.loss_name == "dice":
+            loss = torch.stack(dice_values).mean()
+        elif self.loss_name == "bce":
+            loss = torch.stack(bce_values).mean()
+        elif self.loss_name == "bce_dice":
+            loss = torch.stack(bce_values).mean() + torch.stack(dice_values).mean()
+        else:
+            loss = torch.stack(soft_iou_values).mean()
+        return loss, {
+            "bce": float(bce_values[-1].detach()),
+            "dice_loss": float(dice_values[-1].detach()),
+            "soft_iou_loss": float(soft_iou_values[-1].detach()),
+        }
+
+    @staticmethod
+    def _soft_dice_loss(logits: torch.Tensor, masks: torch.Tensor) -> torch.Tensor:
+        probabilities = torch.sigmoid(logits)
+        dimensions = tuple(range(1, probabilities.ndim))
+        intersection = (probabilities * masks).sum(dim=dimensions)
+        denominator = probabilities.sum(dim=dimensions) + masks.sum(dim=dimensions)
+        dice = (2 * intersection + 1.0) / (denominator + 1.0)
+        return (1.0 - dice).mean()
+
+    @staticmethod
+    def _soft_iou_loss(logits: torch.Tensor, masks: torch.Tensor) -> torch.Tensor:
+        probabilities = torch.sigmoid(logits)
+        dimensions = tuple(range(1, probabilities.ndim))
+        intersection = (probabilities * masks).sum(dim=dimensions)
+        union = probabilities.sum(dim=dimensions) + masks.sum(dim=dimensions) - intersection
+        iou = (intersection + 1.0) / (union + 1.0)
+        return (1.0 - iou).mean()
 
     @torch.no_grad()
     def validation_metrics(self, model: nn.Module, loader: DataLoader[Any], device: torch.device) -> dict[str, float]:

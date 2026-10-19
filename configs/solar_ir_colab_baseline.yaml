@@ -13,6 +13,7 @@ task:
     base_channels: 8
 training:
   seed: 7
+  loss: dice
   batch_size: 8
   max_epochs: 5
   patience: 5
