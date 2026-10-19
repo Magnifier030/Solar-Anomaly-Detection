@@ -289,7 +289,13 @@ def _run(
         bundle.model.train()
         if bundle.train_generator is not None:
             if epoch == start_epoch and next_batch and epoch_generator_state is not None:
-                bundle.train_generator.set_state(epoch_generator_state)
+                if not isinstance(epoch_generator_state, torch.Tensor):
+                    epoch_generator_state = torch.as_tensor(
+                        epoch_generator_state, dtype=torch.uint8
+                    )
+                bundle.train_generator.set_state(
+                    epoch_generator_state.to(dtype=torch.uint8, device="cpu")
+                )
             epoch_generator_state = bundle.train_generator.get_state()
         iterator = iter(bundle.train_loader)
         for _ in range(next_batch):
