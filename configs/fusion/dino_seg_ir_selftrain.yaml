@@ -1,0 +1,35 @@
+name: dino-seg-ir-3target-g013-selftrain
+task:
+  factory: solar_ir.fusion_task:create_task
+  dataset_root: data/raw/datasets/9_16_train_set
+  groups_csv: data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv
+  split_strategy: group
+  validation_groups: [G01, G03, G07]
+  canvas: 672
+  modalities: ir
+  pseudo_label_dir: outputs/pseudo_ir_g013
+  metric_threshold: 0.5
+  model:
+    factory: solar_ir.models.dino_seg:create_model
+    encoder: facebook/dinov2-with-registers-base
+    targets: 3
+training:
+  seed: 7
+  loss: bce_dice
+  scheduler: none
+  drop_last: true
+  batch_size: 4
+  max_epochs: 40
+  patience: 10
+  learning_rate: 0.0005
+  gradient_clip: null
+  checkpoint_every_steps: 200
+  selection_metric: F1_TIoU
+  selection_mode: max
+  amp: false
+tracking:
+  wandb:
+    mode: disabled
+    project: solar-ir-competition
+    system_monitoring: true
+    tags: [solar-ir, fusion, dinov2, three-target, ir]

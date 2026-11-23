@@ -1,0 +1,84 @@
+artifacts:
+- name: pvhsd_pretrained_checkpoint
+  path: outputs/pvhsd-dnanet-1ch-pretrain/best.pt
+  version: pvhsd-dnanet-1ch-pretrain
+- name: pvhsd_prepared_manifest
+  path: data/processed/pv_hsd2025/grayscale_box_masks_v1/manifest.json
+  version: grayscale-box-masks-v1
+name: solar-ir-dnanet-pvhsd-group-freeze_early
+runtime:
+  cudnn:
+    benchmark: true
+    deterministic: false
+    enabled: true
+task:
+  augmentation:
+    enabled: true
+    gaussian_blur_prob: 0.5
+    horizontal_flip_prob: 0.5
+    scale_max: 2.0
+    scale_min: 0.5
+  dataset_root: data/raw/datasets/9_16_train_set
+  external_pretraining:
+    dataset: PV-HSD-2025
+    prepared_manifest: data/processed/pv_hsd2025/grayscale_box_masks_v1/manifest.json
+    source_revision: 40748bc7c445cf9125f2cd25d115fa35bbeb17af
+    supervision: bbox_raster_weak_mask
+  factory: solar_ir.task:create_task
+  groups_csv: data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv
+  image_size:
+  - 640
+  - 512
+  metric_aggregation: global
+  metric_threshold: 0.5
+  model:
+    backbone: resnet_18
+    channel_size: three
+    deep_supervision: true
+    factory: solar_ir.models.dnanet:create_model
+    input_channels: 1
+    num_classes: 1
+    pretrained_path: outputs/pvhsd-dnanet-1ch-pretrain/best.pt
+  preprocessing: grayscale
+  split_strategy: group
+  supervision: polygon_mask
+  validation_fraction: 0.2
+  validation_groups:
+  - G02
+  - G05
+  - G08
+tracking:
+  wandb:
+    mode: disabled
+    project: solar-ir-competition
+    system_monitoring: true
+    tags:
+    - solar-ir
+    - dnanet
+    - pv-hsd-2025
+    - finetune
+    - one-channel
+    - polygon-mask
+training:
+  amp: false
+  batch_size: 4
+  checkpoint_every_steps: 100
+  drop_last: true
+  gradient_clip: null
+  learning_rate: 0.005
+  loss: soft_iou
+  max_epochs: 1500
+  min_lr: 1.0e-05
+  optimizer: Adagrad
+  patience: 50
+  scheduler: upstream_once
+  seed: 7
+  selection_metric: F1_TIoU
+  selection_mode: max
+  finetuning:
+    mode: freeze_modules
+    modules:
+    - conv0_0
+    - conv1_0
+    - conv2_0
+    freeze_running_stats: true

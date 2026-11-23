@@ -1,7 +1,7 @@
 """DNANet port based on the author's released architecture.
 
-This module intentionally does not load checkpoints. The factory initializes a
-fresh model so experiments are reproducible inside the common training engine.
+The factory uses the released Xavier initialization and optionally loads a
+trusted local pretrained checkpoint with strict architecture matching.
 The implementation keeps the nested dense paths and CBAM attention from the
 original model, while exposing a normal ``create_model(config)`` plugin.
 """
@@ -35,13 +35,13 @@ class SpatialAttention(nn.Module):
     def __init__(self, kernel_size: int = 7) -> None:
         super().__init__()
         padding = 3 if kernel_size == 7 else 1
-        self.conv = nn.Conv2d(2, 1, kernel_size, padding=padding, bias=False)
+        self.conv1 = nn.Conv2d(2, 1, kernel_size, padding=padding, bias=False)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, value: torch.Tensor) -> torch.Tensor:
         average = torch.mean(value, dim=1, keepdim=True)
         maximum, _ = torch.max(value, dim=1, keepdim=True)
-        return self.sigmoid(self.conv(torch.cat([average, maximum], dim=1)))
+        return self.sigmoid(self.conv1(torch.cat([average, maximum], dim=1)))
 
 
 class ResCBAMBlock(nn.Module):
@@ -73,7 +73,14 @@ class ResCBAMBlock(nn.Module):
 
 
 class DNANet(nn.Module):
-    def __init__(self, input_channels: int, num_classes: int, filters: list[int], blocks: list[int], deep_supervision: bool) -> None:
+    def __init__(
+        self,
+        input_channels: int,
+        num_classes: int,
+        filters: list[int],
+        blocks: list[int],
+        deep_supervision: bool,
+    ) -> None:
         super().__init__()
         self.pool = nn.MaxPool2d(2, 2)
         self.up = nn.Upsample(scale_factor=2, mode="bilinear", align_corners=True)
@@ -135,10 +142,18 @@ class DNANet(nn.Module):
         x2_2 = self.conv2_2(torch.cat([x2_0, x2_1, self.up(x3_1), self.down(x1_2)], 1))
         x1_3 = self.conv1_3(torch.cat([x1_0, x1_1, x1_2, self.up(x2_2), self.down(x0_3)], 1))
         x0_4 = self.conv0_4(torch.cat([x0_0, x0_1, x0_2, x0_3, self.up(x1_3)], 1))
-        final = self.conv0_4_final(torch.cat([
-            self.up16(self.conv0_4_1x1(x4_0)), self.up8(self.conv0_3_1x1(x3_1)),
-            self.up4(self.conv0_2_1x1(x2_2)), self.up(self.conv0_1_1x1(x1_3)), x0_4,
-        ], 1))
+        final = self.conv0_4_final(
+            torch.cat(
+                [
+                    self.up16(self.conv0_4_1x1(x4_0)),
+                    self.up8(self.conv0_3_1x1(x3_1)),
+                    self.up4(self.conv0_2_1x1(x2_2)),
+                    self.up(self.conv0_1_1x1(x1_3)),
+                    x0_4,
+                ],
+                1,
+            )
+        )
         if self.deep_supervision:
             return [self.final1(x0_1), self.final2(x0_2), self.final3(x0_3), self.final4(final)]
         return self.final(final)
@@ -146,17 +161,37 @@ class DNANet(nn.Module):
 
 def create_model(config: dict[str, Any]) -> nn.Module:
     backbone = str(config.get("backbone", "resnet_18"))
-    blocks = {"resnet_10": [1, 1, 1, 1], "resnet_18": [2, 2, 2, 2], "resnet_34": [3, 4, 6, 3], "vgg_10": [1, 1, 1, 1]}.get(backbone)
+    blocks = {
+        "resnet_10": [1, 1, 1, 1],
+        "resnet_18": [2, 2, 2, 2],
+        "resnet_34": [3, 4, 6, 3],
+        "vgg_10": [1, 1, 1, 1],
+    }.get(backbone)
     if blocks is None:
         raise ValueError(f"Unsupported DNANet backbone: {backbone}")
-    channel_size = str(config.get("channel_size", "two"))
-    filters = {"one": [4, 8, 16, 32, 64], "two": [8, 16, 32, 64, 128], "three": [16, 32, 64, 128, 256], "four": [32, 64, 128, 256, 512]}.get(channel_size)
+    channel_size = str(config.get("channel_size", "three"))
+    filters = {
+        "one": [4, 8, 16, 32, 64],
+        "two": [8, 16, 32, 64, 128],
+        "three": [16, 32, 64, 128, 256],
+        "four": [32, 64, 128, 256, 512],
+    }.get(channel_size)
     if filters is None:
         raise ValueError(f"Unsupported DNANet channel_size: {channel_size}")
-    return DNANet(
-        int(config.get("input_channels", 1)),
+    model = DNANet(
+        int(config.get("input_channels", 3)),
         int(config.get("num_classes", 1)),
         filters,
         blocks,
         bool(config.get("deep_supervision", True)),
     )
+    # The released trainer applies Xavier normal to every Conv2d weight.
+    for module in model.modules():
+        if isinstance(module, nn.Conv2d):
+            nn.init.xavier_normal_(module.weight)
+    checkpoint_path = config.get("pretrained_path")
+    if checkpoint_path:
+        checkpoint = torch.load(str(checkpoint_path), map_location="cpu", weights_only=True)
+        state = checkpoint.get("state_dict", checkpoint.get("model", checkpoint))
+        model.load_state_dict(state, strict=True)
+    return model

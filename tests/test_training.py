@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 from pathlib import Path
 
+import pytest
 import torch
 
 from research_training.config import config_hash, load_config, load_queue
@@ -34,10 +35,20 @@ def _config() -> dict[str, object]:
     }
 
 
-def test_smoke_run_writes_reproducibility_bundle(tmp_path: Path) -> None:
+def test_smoke_run_writes_reproducibility_bundle(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     store = ArtifactStore(tmp_path)
     result = run_experiment(_config(), store, seed=3, device_name="cpu")
     run_dir = tmp_path / "test-run"
+    output = capsys.readouterr().out
+    assert "Run: test-run" in output
+    assert "batch 1/" in output
+    assert "loss=" in output
+    assert "validation starting" in output
+    assert "Checkpoint saved" in output
+    assert "Training complete" in output
+    assert "batch 1/" in (run_dir / "console.log").read_text()
     assert result["status"] == "complete"
     assert result["validation"]["loss"] >= 0
     assert {
@@ -48,9 +59,7 @@ def test_smoke_run_writes_reproducibility_bundle(tmp_path: Path) -> None:
         "history.json",
         "train_log.jsonl",
         "train.log",
-    } <= {
-        path.name for path in run_dir.iterdir()
-    }
+    } <= {path.name for path in run_dir.iterdir()}
     assert "kind=iteration" in (run_dir / "train.log").read_text(encoding="utf-8")
     checkpoint = torch.load(run_dir / "latest.pt", map_location="cpu", weights_only=False)
     assert checkpoint["completed"] is True

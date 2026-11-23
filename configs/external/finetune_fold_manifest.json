@@ -1,0 +1,26 @@
+{
+  "scheme": "leave-one-hotspot-group-out",
+  "folds": {
+    "G01": [
+      "G01",
+      "G06",
+      "G07"
+    ],
+    "G02": [
+      "G02",
+      "G10"
+    ],
+    "G03": [
+      "G03",
+      "G05",
+      "G11"
+    ],
+    "G04": [
+      "G04",
+      "G08",
+      "G09",
+      "G12"
+    ]
+  },
+  "source": "data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv (official group isolation)"
+}

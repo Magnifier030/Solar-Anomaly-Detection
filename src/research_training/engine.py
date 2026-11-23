@@ -13,7 +13,10 @@ from typing import Any, cast
 import numpy as np
 import torch
 
+from research_training.backends import configure_backends
 from research_training.config import config_hash, load_task
+from research_training.progress import console_output, report
+from research_training.progress import duration as format_duration
 from research_training.storage import ArtifactStore, atomic_replace, file_sha256
 from research_training.task import TaskBundle
 from research_training.tracking import WandbTracker
@@ -55,8 +58,7 @@ def _restore_rng(state: dict[str, Any]) -> None:
     torch.set_rng_state(torch_state.to(dtype=torch.uint8, device="cpu"))
     if "cuda" in state and torch.cuda.is_available():
         cuda_states = [
-            value if isinstance(value, torch.Tensor)
-            else torch.as_tensor(value, dtype=torch.uint8)
+            value if isinstance(value, torch.Tensor) else torch.as_tensor(value, dtype=torch.uint8)
             for value in state["cuda"]
         ]
         torch.cuda.set_rng_state_all(
@@ -132,6 +134,9 @@ def _write_logs(directory: Path, history: list[dict[str, Any]]) -> None:
                 "train/loss",
                 "validation/loss",
                 "validation/f1_tiou",
+                "validation/F1_TIoU",
+                "validation/weak_mask_iou",
+                "validation/weak_mask_dice",
                 "validation/mean_iou",
                 "validation/dice",
             ):
@@ -216,18 +221,22 @@ def run_experiment(
     """Train one configured task with resumable state and remote weight publication."""
     name = str(config["name"])
     directory = store.run_dir(name)
-    resolved = copy.deepcopy(config)
-    resolved.setdefault("training", {})["seed"] = seed
-    manifest = _prepare_artifacts(resolved, store)
-    _save_json(directory / "resolved_config.json", resolved)
-    _save_json(directory / "data_manifest.json", {"artifacts": manifest})
-    store.upload_artifact(name, directory / "resolved_config.json")
-    store.upload_artifact(name, directory / "data_manifest.json")
-    tracker = WandbTracker(resolved, directory)
-    try:
-        return _run(resolved, store, tracker, seed, device_name, resume, max_steps)
-    finally:
-        tracker.finish()
+    with console_output(directory):
+        report(f"Run: {name} | requested device={device_name} | seed={seed}")
+        report(f"Output: {directory.resolve()} | live log: console.log")
+        resolved = copy.deepcopy(config)
+        resolved.setdefault("training", {})["seed"] = seed
+        report("Checking configured artifacts and initializing tracking...")
+        manifest = _prepare_artifacts(resolved, store)
+        _save_json(directory / "resolved_config.json", resolved)
+        _save_json(directory / "data_manifest.json", {"artifacts": manifest})
+        store.upload_artifact(name, directory / "resolved_config.json")
+        store.upload_artifact(name, directory / "data_manifest.json")
+        tracker = WandbTracker(resolved, directory)
+        try:
+            return _run(resolved, store, tracker, seed, device_name, resume, max_steps)
+        finally:
+            tracker.finish()
 
 
 def _run(
@@ -243,9 +252,25 @@ def _run(
     name = str(config["name"])
     directory = store.run_dir(name)
     device = _device(device_name)
+    backend = configure_backends(config, device)
+    _save_json(directory / "runtime_backend.json", backend)
+    report(
+        f"Backend | device={device} | cuDNN active={backend['cudnn_active']} | "
+        f"version={backend['cudnn_version']} | benchmark={backend['cudnn_benchmark']} | "
+        f"deterministic={backend['cudnn_deterministic']}"
+    )
     _seed_everything(seed)
+    report(
+        f"Building task {config['task']['factory']} on {device} (dataset verification/loading)..."
+    )
     task = load_task(str(config["task"]["factory"]))
     bundle = task.build(config, device)
+    bundle.metadata["runtime_backend"] = backend
+    report(
+        f"Ready | model={type(bundle.model).__name__} | "
+        f"train batches={len(bundle.train_loader)} | "
+        f"validation batches={len(bundle.validation_loader)}"
+    )
     amp = bool(training.get("amp", True)) and device.type == "cuda"
     scaler: Any = torch.amp.GradScaler("cuda", enabled=amp)
     selection = str(training.get("selection_metric", "loss"))
@@ -259,10 +284,12 @@ def _run(
     epoch_generator_state: torch.Tensor | None = None
     checkpoint = store.restore_checkpoint(name) if resume else None
     if checkpoint is not None:
+        report(f"Restoring checkpoint: {checkpoint}")
         state = torch.load(checkpoint, map_location=device, weights_only=False)
         if state["config_hash"] != config_hash(config):
             raise ValueError("Refusing to resume with changed behavior-affecting configuration")
         if state["completed"]:
+            report("Run already complete; returning saved results.")
             if "result" in state:
                 return cast(dict[str, Any], state["result"])
             return cast(
@@ -275,17 +302,26 @@ def _run(
         start_epoch, next_batch, step = state["epoch"], state["next_batch"], state["global_step"]
         best_metric, best_epoch = state["best_metric"], state["best_epoch"]
         patience_count, best_weights, history = (
-            state["patience_count"], state["best_weights"], state["history"]
+            state["patience_count"],
+            state["best_weights"],
+            state["history"],
         )
         epoch_generator_state = state.get("epoch_generator_state")
         _restore_rng(state["rng"])
+        report(f"Resumed | epoch={start_epoch + 1} | next batch={next_batch + 1} | step={step}")
     maximum_epochs = int(training["max_epochs"])
     checkpoint_every = int(training.get("checkpoint_every_steps", 100))
     patience = int(training.get("patience", maximum_epochs))
     gradient_clip = training.get("gradient_clip")
     stopped_early = False
     training_started = time.perf_counter()
+    console_settings = config.get("tracking", {}).get("console", {})
+    log_every = max(1, int(console_settings.get("every_steps", 10)))
+    log_seconds = max(0.0, float(console_settings.get("every_seconds", 10)))
     for epoch in range(start_epoch, maximum_epochs):
+        report(f"Epoch {epoch + 1}/{maximum_epochs} | train | batches={len(bundle.train_loader)}")
+        epoch_started = last_progress = time.perf_counter()
+        resumed_batch = next_batch
         bundle.model.train()
         if bundle.train_generator is not None:
             if epoch == start_epoch and next_batch and epoch_generator_state is not None:
@@ -298,6 +334,8 @@ def _run(
                 )
             epoch_generator_state = bundle.train_generator.get_state()
         iterator = iter(bundle.train_loader)
+        if next_batch:
+            report(f"Replaying/skipping {next_batch} batches to restore loader position...")
         for _ in range(next_batch):
             next(iterator)
         for batch_index, batch in enumerate(iterator, start=next_batch):
@@ -309,9 +347,9 @@ def _run(
             scaler.unscale_(bundle.optimizer)
             gradient_norm = None
             if gradient_clip is not None:
-                gradient_norm = float(torch.nn.utils.clip_grad_norm_(
-                    bundle.model.parameters(), float(gradient_clip)
-                ))
+                gradient_norm = float(
+                    torch.nn.utils.clip_grad_norm_(bundle.model.parameters(), float(gradient_clip))
+                )
             scaler.step(bundle.optimizer)
             scaler.update()
             if device.type == "cuda":
@@ -323,42 +361,84 @@ def _run(
             except (TypeError, IndexError):
                 batch_size = 1
             event = {
-                "kind": "iteration", "epoch": epoch, "batch": batch_index,
-                "optimizer_step": step, "train/loss": float(loss.detach()),
+                "kind": "iteration",
+                "epoch": epoch,
+                "batch": batch_index,
+                "optimizer_step": step,
+                "train/loss": float(loss.detach()),
                 "train/gradient_norm": gradient_norm,
                 "train/iteration_seconds": duration,
                 "train/throughput_samples_per_s": batch_size / max(duration, 1e-9),
                 "train/learning_rate": bundle.optimizer.param_groups[0]["lr"],
                 "system/gpu_memory_allocated_mb": (
                     torch.cuda.memory_allocated(device) / (1024**2)
-                    if device.type == "cuda" else None
+                    if device.type == "cuda"
+                    else None
                 ),
                 "system/gpu_peak_memory_allocated_mb": (
                     torch.cuda.max_memory_allocated(device) / (1024**2)
-                    if device.type == "cuda" else None
+                    if device.type == "cuda"
+                    else None
                 ),
                 **{f"train/{key}": value for key, value in diagnostics.items()},
             }
             history.append(event)
+            now = time.perf_counter()
+            if (
+                batch_index == resumed_batch
+                or (batch_index + 1) % log_every == 0
+                or now - last_progress >= log_seconds
+                or batch_index + 1 == len(bundle.train_loader)
+            ):
+                elapsed = now - epoch_started
+                observed = batch_index - resumed_batch + 1
+                eta = elapsed / observed * (len(bundle.train_loader) - batch_index - 1)
+                memory = event["system/gpu_memory_allocated_mb"]
+                gpu = f" | GPU={memory:.0f} MiB" if memory is not None else ""
+                report(
+                    f"Epoch {epoch + 1}/{maximum_epochs} | batch {batch_index + 1}/"
+                    f"{len(bundle.train_loader)} | step={step} | loss={float(loss.detach()):.6f}"
+                    f" | lr={bundle.optimizer.param_groups[0]['lr']:.6g}"
+                    f" | {format_duration(elapsed)} elapsed | train ETA={format_duration(eta)}{gpu}"
+                )
+                last_progress = now
             if step % checkpoint_every == 0 or (max_steps is not None and step >= max_steps):
                 payload = _checkpoint(
-                    config=config, bundle=bundle, scaler=scaler, epoch=epoch,
-                    next_batch=batch_index + 1, step=step, best_metric=best_metric,
-                    best_epoch=best_epoch, patience_count=patience_count,
-                    best_weights=best_weights, history=history, completed=False,
+                    config=config,
+                    bundle=bundle,
+                    scaler=scaler,
+                    epoch=epoch,
+                    next_batch=batch_index + 1,
+                    step=step,
+                    best_metric=best_metric,
+                    best_epoch=best_epoch,
+                    patience_count=patience_count,
+                    best_weights=best_weights,
+                    history=history,
+                    completed=False,
                     epoch_generator_state=epoch_generator_state,
                 )
+                report(f"Saving checkpoint at step {step}...")
                 store.save_checkpoint(name, payload, step)
+                report(f"Checkpoint saved at step {step}.")
                 _write_logs(directory, history)
                 for artifact in (directory / "train_log.jsonl", directory / "history.json"):
                     store.upload_artifact(name, artifact)
                 tracker.log(event)
             if max_steps is not None and step >= max_steps:
+                report(f"Stopped at requested step limit {step}; checkpoint ready to resume.")
                 return {"status": "paused_at_step_limit", "global_step": step}
         next_batch = 0
+        report(f"Epoch {epoch + 1}/{maximum_epochs} | validation starting...")
+        validation_started = time.perf_counter()
         validation = task.validation_metrics(bundle.model, bundle.validation_loader, device)
         if selection not in validation:
             raise KeyError(f"Selection metric {selection!r} missing from validation metrics")
+        metrics_text = " | ".join(f"{key}={value:.6f}" for key, value in validation.items())
+        report(
+            f"Validation complete ({format_duration(time.perf_counter() - validation_started)}) | "
+            f"{metrics_text}"
+        )
         current = float(validation[selection])
         improved = current < best_metric if direction == "min" else current > best_metric
         if improved:
@@ -375,9 +455,18 @@ def _run(
             atomic_replace(temporary, directory / "best.pt")
         else:
             patience_count += 1
-        event = {"kind": "epoch", "epoch": epoch, "optimizer_step": step, **{
-            f"validation/{key}": value for key, value in validation.items()
-        }, **_gpu_utilization(device)}
+        report(
+            f"Epoch {epoch + 1}/{maximum_epochs} | {selection}={current:.6f} | "
+            f"best={best_metric:.6f} (epoch {best_epoch + 1}) | "
+            f"{'new best' if improved else f'patience {patience_count}/{patience}'}"
+        )
+        event = {
+            "kind": "epoch",
+            "epoch": epoch,
+            "optimizer_step": step,
+            **{f"validation/{key}": value for key, value in validation.items()},
+            **_gpu_utilization(device),
+        }
         elapsed = time.perf_counter() - training_started
         completed_epochs = epoch - start_epoch + 1
         event["train/eta_to_max_epochs_s"] = (
@@ -386,12 +475,23 @@ def _run(
         history.append(event)
         tracker.log(event)
         payload = _checkpoint(
-            config=config, bundle=bundle, scaler=scaler, epoch=epoch + 1, next_batch=0,
-            step=step, best_metric=best_metric, best_epoch=best_epoch,
-            patience_count=patience_count, best_weights=best_weights, history=history,
-            completed=False, epoch_generator_state=None,
+            config=config,
+            bundle=bundle,
+            scaler=scaler,
+            epoch=epoch + 1,
+            next_batch=0,
+            step=step,
+            best_metric=best_metric,
+            best_epoch=best_epoch,
+            patience_count=patience_count,
+            best_weights=best_weights,
+            history=history,
+            completed=False,
+            epoch_generator_state=None,
         )
+        report(f"Saving epoch {epoch + 1} checkpoint at step {step}...")
         store.save_checkpoint(name, payload, step)
+        report("Epoch checkpoint saved.")
         _write_logs(directory, history)
         for artifact in (directory / "train_log.jsonl", directory / "history.json"):
             store.upload_artifact(name, artifact)
@@ -399,24 +499,39 @@ def _run(
             store.upload_artifact(name, directory / "best.pt")
         if patience_count >= patience:
             stopped_early = True
+            report(f"Early stopping after {patience_count} epochs without improvement.")
             break
     if best_weights is None:
         raise RuntimeError("Training completed without a selectable checkpoint")
     bundle.model.load_state_dict(best_weights)
+    report(f"Evaluating best checkpoint from epoch {best_epoch + 1}...")
     final_validation = task.validation_metrics(bundle.model, bundle.validation_loader, device)
     metrics: dict[str, Any] = {
-        "status": "complete", "seed": seed, "global_step": step,
-        "best_epoch": best_epoch, "best_metric": best_metric,
-        "stopped_early": stopped_early, "validation": final_validation,
+        "status": "complete",
+        "seed": seed,
+        "global_step": step,
+        "best_epoch": best_epoch,
+        "best_metric": best_metric,
+        "stopped_early": stopped_early,
+        "validation": final_validation,
         "metadata": bundle.metadata,
     }
     _save_json(directory / "metrics.json", metrics)
     tracker.summary({f"result/{key}": value for key, value in final_validation.items()})
     payload = _checkpoint(
-        config=config, bundle=bundle, scaler=scaler, epoch=best_epoch,
-        next_batch=0, step=step, best_metric=best_metric, best_epoch=best_epoch,
-        patience_count=patience_count, best_weights=best_weights, history=history,
-        completed=True, epoch_generator_state=None,
+        config=config,
+        bundle=bundle,
+        scaler=scaler,
+        epoch=best_epoch,
+        next_batch=0,
+        step=step,
+        best_metric=best_metric,
+        best_epoch=best_epoch,
+        patience_count=patience_count,
+        best_weights=best_weights,
+        history=history,
+        completed=True,
+        epoch_generator_state=None,
     )
     payload["result"] = metrics
     store.save_checkpoint(name, payload, step)
@@ -424,6 +539,7 @@ def _run(
         directory / "best.pt",
         directory / "metrics.json",
         directory / "resolved_config.json",
+        directory / "runtime_backend.json",
     )
     for artifact in final_artifacts:
         store.upload_artifact(name, artifact)
@@ -435,4 +551,5 @@ def _run(
             if not path.is_file() or directory not in path.resolve().parents:
                 raise ValueError(f"Task artifact must be a file inside the run directory: {path}")
             store.upload_artifact(name, path)
+    report(f"Training complete | best {selection}={best_metric:.6f} | output={directory}")
     return metrics

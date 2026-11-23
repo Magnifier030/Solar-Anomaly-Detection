@@ -32,6 +32,18 @@ overlap、recall/precision aggregation 與 duplicate prediction handling；`F1_T
 - CPU/CUDA auto selection、AMP、gradient clipping、min/max checkpoint selection、early stopping。
 - iteration duration、throughput、learning rate、ETA、PyTorch GPU memory 與 `nvidia-smi` board telemetry。
 
+DNA-Net 的官方設定對齊、原始資料下載與 group 尺寸落差分析，見
+[查核報告](docs/dnanet_reproduction.md)。
+
+外部 IR 資料 PV-HSD-2025 已下載並查核，來源、授權與實驗使用狀態見
+[資料使用紀錄](docs/datasets/PV-HSD-2025.md)。
+
+單通道 DNA-Net 的 PV-HSD 預訓練與競賽微調，見
+[兩階段訓練指令](docs/training/pvhsd2025_dnanet.md)。
+
+目前全部實驗結果、Test 平台分數及診斷結論，見
+[實驗紀錄總表](docs/experiments/README.md)（另附 JSON／CSV）。
+
 ## 快速開始
 
 ```powershell

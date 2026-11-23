@@ -17,7 +17,7 @@ data/raw/
 data/processed/
 data/manifests/
 outputs/
-experiments/
+/experiments/
 *.pt
 *.pth
 *.ckpt
@@ -33,3 +33,4 @@ wandb/
 .idea/
 .vscode/
 *.swp
+.hf_cache/

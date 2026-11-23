@@ -1,0 +1,50 @@
+name: inp-former-ir-normal-only
+task:
+  factory: solar_ir.task:create_task
+  dataset_root: data/raw/datasets/9_16_train_set
+  groups_csv: data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv
+  supervision: polygon_mask
+  split_strategy: group
+  image_size: 224
+  preprocessing: grayscale
+  validation_fraction: 0.2
+  train_normal_only: true
+  metric_threshold: 0.5
+  metric_aggregation: global
+  augmentation:
+    enabled: false
+  model:
+    factory: solar_ir.models.inp_former:create_model
+    input_channels: 1
+    encoder: facebook/dinov2-with-registers-base
+    encoder_size: 224
+    encoder_layers: [[2, 3, 4, 5], [6, 7, 8, 9]]
+    num_prototypes: 6
+    decoder_depth: 8
+    heads: 8
+    gamma: 3.0
+    coherence_weight: 0.2
+    score_scale: 20.0
+    score_offset: 0.3
+    blur_sigma: 4.0
+training:
+  seed: 7
+  loss: inp
+  optimizer: AdamW
+  scheduler: none
+  drop_last: true
+  batch_size: 16
+  max_epochs: 100
+  patience: 30
+  learning_rate: 0.001
+  gradient_clip: null
+  checkpoint_every_steps: 100
+  selection_metric: F1_TIoU
+  selection_mode: max
+  amp: false
+tracking:
+  wandb:
+    mode: disabled
+    project: solar-ir-competition
+    system_monitoring: true
+    tags: [solar-ir, thermal, anomaly-detection, inp-former, normal-only]

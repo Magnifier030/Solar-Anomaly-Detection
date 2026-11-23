@@ -1,0 +1,8 @@
+training_config: configs/pvhsd2025/finetune_solar_dnanet_1ch_cudnn_photo.yaml
+checkpoint: outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/best.pt
+test_root: data/raw/datasets/9_30_test_set
+evaluation_kit: data/raw/evaluation_kit/author-kit_1012
+output_dir: outputs/submissions/dnanet-ir-only-photo-20261102
+device: cuda
+batch_size: 4
+threshold: 0.5

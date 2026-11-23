@@ -1,0 +1,14 @@
+{
+  "source_revision": "40748bc7c445cf9125f2cd25d115fa35bbeb17af",
+  "review_date": "2026-10-20",
+  "exclusions": [
+    {
+      "image": "train/images/62_2.JPG",
+      "reason": "Visually confirmed visible-light RGB photograph (4000x3000); excluded from IR-only candidate manifest. Original file retained."
+    },
+    {
+      "image": "train/images/62_3.JPG",
+      "reason": "Visually confirmed visible-light RGB photograph (4000x3000); excluded from IR-only candidate manifest. Original file retained."
+    }
+  ]
+}

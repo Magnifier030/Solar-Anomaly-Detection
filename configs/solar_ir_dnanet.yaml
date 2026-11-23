@@ -5,9 +5,11 @@ task:
   groups_csv: data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv
   supervision: polygon_mask
   split_strategy: group
-  image_size: [640, 512]
+  image_size: 256
+  preprocessing: dnanet
   validation_fraction: 0.2
   metric_threshold: 0.5
+  metric_aggregation: global
   augmentation:
     enabled: true
     horizontal_flip_prob: 0.5
@@ -16,23 +18,27 @@ task:
     gaussian_blur_prob: 0.5
   model:
     factory: solar_ir.models.dnanet:create_model
-    input_channels: 1
+    input_channels: 3
     num_classes: 1
     backbone: resnet_18
-    channel_size: two
+    channel_size: three
     deep_supervision: true
 training:
   seed: 7
-  loss: dice
-  batch_size: 2
-  max_epochs: 150
-  patience: 25
-  learning_rate: 0.0001
-  gradient_clip: 1.0
+  loss: soft_iou
+  optimizer: Adagrad
+  scheduler: upstream_once
+  min_lr: 0.00001
+  drop_last: true
+  batch_size: 4
+  max_epochs: 1500
+  patience: 1500
+  learning_rate: 0.05
+  gradient_clip: null
   checkpoint_every_steps: 100
-  selection_metric: F1_TIoU
+  selection_metric: mean_iou
   selection_mode: max
-  amp: true
+  amp: false
 tracking:
   wandb:
     mode: disabled

@@ -1,0 +1,59 @@
+name: pretrain-pvtd-dnanet-1ch-bs16
+task:
+  factory: solar_ir.pretraining:create_task
+  dataset_root: data/processed/pv_thermal_defects/weak_box_masks_v1
+  supervision: bbox_raster_weak_mask
+  image_size:
+  - 640
+  - 512
+  augmentation:
+    enabled: true
+    horizontal_flip_prob: 0.5
+    scale_min: 0.5
+    scale_max: 2.0
+    gaussian_blur_prob: 0.5
+  model:
+    factory: solar_ir.models.dnanet:create_model
+    input_channels: 1
+    num_classes: 1
+    backbone: resnet_18
+    channel_size: three
+    deep_supervision: true
+training:
+  seed: 7
+  loss: soft_iou
+  optimizer: Adagrad
+  scheduler: upstream_once
+  min_lr: 1.0e-05
+  drop_last: true
+  batch_size: 16
+  max_epochs: 20
+  patience: 20
+  learning_rate: 0.05
+  gradient_clip: null
+  checkpoint_every_steps: 100
+  selection_metric: weak_mask_iou
+  selection_mode: max
+  amp: false
+tracking:
+  wandb:
+    mode: disabled
+    project: solar-ir-competition
+    system_monitoring: true
+    tags:
+    - solar-ir
+    - dnanet
+    - pv-thermal-defects
+    - pretrain
+    - one-channel
+    - weak-box-mask
+    - bs16
+artifacts:
+- name: pvtd_prepared_manifest
+  path: data/processed/pv_thermal_defects/weak_box_masks_v1/manifest.json
+  version: yolo-box-weak-mask-v1
+runtime:
+  cudnn:
+    enabled: true
+    benchmark: true
+    deterministic: false

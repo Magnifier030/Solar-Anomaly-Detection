@@ -1,0 +1,171 @@
+{
+  "dataset_id": "PV-HSD-2025",
+  "role": "external_dataset_for_pretraining_evaluation",
+  "source": {
+    "repository": "MisakaMikoto128/PV-HSD-2025",
+    "revision": "40748bc7c445cf9125f2cd25d115fa35bbeb17af",
+    "dataset_page": "https://huggingface.co/datasets/MisakaMikoto128/PV-HSD-2025",
+    "download_url": "https://huggingface.co/datasets/MisakaMikoto128/PV-HSD-2025/resolve/40748bc7c445cf9125f2cd25d115fa35bbeb17af/PV-HSD-2025.zip",
+    "paper_url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5134282",
+    "paper_title": "PV-HSD-2025 Infrared Hotspot Dataset for Photovoltaic Panels and YOLOv8-P1 Defect Detection Model"
+  },
+  "acquisition": {
+    "downloaded_at_utc": "2026-10-20T12:31:56.803022+00:00",
+    "archive_path": "data/raw/external/PV-HSD-2025/PV-HSD-2025.zip",
+    "archive_bytes": 3740409982,
+    "sha256": "3fac0ae8e3e345e9f3d1c45afb4251530f79bfda8d772aacd708799a32416c32",
+    "official_lfs_sha256_matches": true,
+    "extracted_path": "data/raw/external/PV-HSD-2025/extracted",
+    "all_members_extracted_with_crc_checks": true
+  },
+  "license_evidence": {
+    "hf_readme_frontmatter": "apache-2.0",
+    "hf_readme_body": "Academic research use; contact author for commercial authorization.",
+    "archive_data_yaml": "Public Domain",
+    "interpretation": "Conflicting upstream declarations retained; no license reconciliation assumed.",
+    "saved_hf_readme": "data/raw/external/PV-HSD-2025/source_metadata/README.upstream.md",
+    "saved_hf_readme_sha256": "bb6ce3b05360679d3e4fabaf8d5ae769a1fef8b9050030fda76b3f93e2d003a6"
+  },
+  "audit": {
+    "images": 4025,
+    "labels": 4025,
+    "boxes": 25177,
+    "source_claimed_boxes": 25181,
+    "candidate_ir_images": 4023,
+    "splits": {
+      "train": {
+        "images": 2808,
+        "boxes": 17433,
+        "positive_images": 2658,
+        "empty_labels": 150
+      },
+      "valid": {
+        "images": 1217,
+        "boxes": 7744,
+        "positive_images": 1140,
+        "empty_labels": 77
+      }
+    },
+    "image_resolutions": {
+      "640x512": 4023,
+      "4000x3000": 2
+    },
+    "exact_file_duplicate_sets": 0,
+    "decoded_rgb_duplicate_sets": 0,
+    "near_duplicates_checked": false,
+    "manual_exclusions_file": "docs/datasets/PV-HSD-2025-exclusions.json",
+    "file_manifest": "data/raw/external/PV-HSD-2025/file_manifest.json",
+    "file_manifest_sha256": "87d697e8070d71dd9ffe785d11896e3453bb55677e2adabe2fb0fb7ad84ef9b7",
+    "audit_summary": "data/raw/external/PV-HSD-2025/audit_summary.json",
+    "audit_summary_sha256": "2d5139c84ce15b19f1b16bbe879bcee4847e4f33c35f9102c1ada3b3b8eaee41"
+  },
+  "usage": {
+    "status": "formal_pretraining_started",
+    "training_used": true,
+    "mask_generation_used": true,
+    "original_images_modified": false,
+    "experiment_runs": [
+      {
+        "scope": "verification_smoke_only",
+        "path": "outputs/verification/pvhsd2025_1ch/runs/pretrain-smoke"
+      },
+      {
+        "scope": "verification_smoke_only",
+        "path": "outputs/verification/pvhsd2025_1ch/runs/finetune-smoke"
+      },
+      {
+        "scope": "formal_pretraining",
+        "path": "outputs/pvhsd-dnanet-1ch-pretrain",
+        "resolved_config_sha256": "4e19b7709bbd464c49ee22c64ea668c17a5d72a34ef9b81739a467253938c993",
+        "prepared_manifest_sha256": "66def44ce8074f10bed1d8642e6bb9ae9cecf3dfa445f63db46d5254622b6c24"
+      }
+    ],
+    "transformations": [
+      {
+        "kind": "selection_manifest_only",
+        "path": "data/raw/external/PV-HSD-2025/ir_candidate_manifest.json",
+        "sha256": "c57adc2a16c0dd2a45a9fd68485a7068dce04ec58b922ade0b11cc43bd2878a9",
+        "description": "Exclude two visually confirmed visible-light photographs; source files unchanged."
+      },
+      {
+        "kind": "grayscale_and_bbox_weak_masks",
+        "manifest": "data/processed/pv_hsd2025/grayscale_box_masks_v1/manifest.json",
+        "sha256": "66def44ce8074f10bed1d8642e6bb9ae9cecf3dfa445f63db46d5254622b6c24",
+        "source_images_modified": false
+      }
+    ],
+    "training_usage_scope": "formal_PV_HSD_pretraining_and_earlier_CPU_verification",
+    "formal_pretraining_started": true,
+    "mask_generation_method": "bbox_union_rasterization_not_true_panel_contours"
+  },
+  "events": [
+    {
+      "at_utc": "2026-10-20T12:31:56.803022+00:00",
+      "action": "download_and_verify",
+      "experiment_run": null
+    },
+    {
+      "at_utc": "2026-10-20T12:35:05.531609+00:00",
+      "action": "audit_and_record_two_visible_light_exclusions",
+      "experiment_run": null
+    },
+    {
+      "at_utc": "2026-10-20T12:42:20.444297+00:00",
+      "action": "prepare_one_channel_and_bbox_weak_masks",
+      "manifest_sha256": "66def44ce8074f10bed1d8642e6bb9ae9cecf3dfa445f63db46d5254622b6c24"
+    },
+    {
+      "at_utc": "2026-10-20T12:45:34.878902+00:00",
+      "action": "CPU_pretrain_checkpoint_finetune_smoke_test",
+      "report": "outputs/verification/pvhsd2025_1ch/result.json",
+      "formal_training": false
+    },
+    {
+      "at_utc": "2026-10-20T13:10:05.775724+00:00",
+      "action": "formal_external_pretraining_observed",
+      "run": "outputs/pvhsd-dnanet-1ch-pretrain",
+      "saved_step_when_first_audited": 1600
+    },
+    {
+      "at_utc": "2026-10-22T13:28:06.466810+00:00",
+      "action": "ir_only_test_submission_prepared_using_PV_HSD_pretrained_finetuned_weights",
+      "finetune_run": "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo",
+      "submission": "outputs/submissions/dnanet-ir-only-photo-20261022/submission.json",
+      "manifest": "outputs/submissions/dnanet-ir-only-photo-20261022/manifest.json",
+      "official_format_check_passed": true,
+      "uploaded": false
+    }
+  ],
+  "processed": {
+    "path": "data/processed/pv_hsd2025/grayscale_box_masks_v1",
+    "manifest": "data/processed/pv_hsd2025/grayscale_box_masks_v1/manifest.json",
+    "manifest_sha256": "66def44ce8074f10bed1d8642e6bb9ae9cecf3dfa445f63db46d5254622b6c24",
+    "pipeline": "grayscale-box-masks-v1",
+    "input_channels": 1,
+    "supervision": "bbox_raster_weak_mask",
+    "summary": {
+      "images": 4023,
+      "boxes": 25177,
+      "original_split_counts": {
+        "train": 2806,
+        "valid": 1217
+      },
+      "splits": {
+        "train": {
+          "images": 3284,
+          "positive_images": 3107,
+          "boxes": 20685,
+          "families": 1009
+        },
+        "validation": {
+          "images": 739,
+          "positive_images": 691,
+          "boxes": 4492,
+          "families": 224
+        }
+      }
+    },
+    "temperature_recovered": false,
+    "split_policy": "sha256(seed:filename_family_hint), NOT verified physical scene groups"
+  }
+}
