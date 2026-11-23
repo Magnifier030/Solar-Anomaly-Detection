@@ -1,0 +1,20 @@
+G01 auc_cl 0.982 auc_v3 0.933
+G02 auc_cl 0.975 auc_v3 0.99
+G03 auc_cl 0.99 auc_v3 0.995
+G04 auc_cl 0.981 auc_v3 0.981
+saved _real REAL True
+G01 auc_cl 0.769 auc_v3 0.933
+G02 auc_cl 0.909 auc_v3 0.99
+G03 auc_cl 0.994 auc_v3 0.995
+G04 auc_cl 0.993 auc_v3 0.981
+saved _syn REAL False
+v3               pooled 0.728 thr 3.00 K2 rel0.7 | {'G01': np.float64(0.444), 'G02': np.float64(0.645), 'G03': np.float64(0.879), 'G04': np.float64(0.818)} | mean 0.697
+abs_real         pooled 0.596 thr -1.50 K2 rel0 | {'G01': np.float64(0.182), 'G02': np.float64(0.444), 'G03': np.float64(0.885), 'G04': np.float64(0.828)} | mean 0.585
+z_real           pooled 0.594 thr 1.25 K2 rel0.7 | {'G01': np.float64(0.185), 'G02': np.float64(0.44), 'G03': np.float64(0.867), 'G04': np.float64(0.815)} | mean 0.577
+v3+.3abs_real    pooled 0.748 thr 2.00 K2 rel0.7 | {'G01': np.float64(0.5), 'G02': np.float64(0.651), 'G03': np.float64(0.906), 'G04': np.float64(0.853)} | mean 0.728
+abs_syn          pooled 0.501 thr -0.50 K2 rel0 | {'G01': np.float64(0.04), 'G02': np.float64(0.244), 'G03': np.float64(0.875), 'G04': np.float64(0.851)} | mean 0.502
+z_syn            pooled 0.510 thr 1.50 K2 rel0.7 | {'G01': np.float64(0.049), 'G02': np.float64(0.242), 'G03': np.float64(0.833), 'G04': np.float64(0.874)} | mean 0.499
+v3+.3abs_syn     pooled 0.753 thr 2.50 K2 rel0.7 | {'G01': np.float64(0.4), 'G02': np.float64(0.651), 'G03': np.float64(0.906), 'G04': np.float64(0.869)} | mean 0.707
+abs_avg          pooled 0.568 thr -1.00 K2 rel0 | {'G01': np.float64(0.157), 'G02': np.float64(0.357), 'G03': np.float64(0.871), 'G04': np.float64(0.865)} | mean 0.562
+z_avg            pooled 0.573 thr 1.50 K2 rel0.7 | {'G01': np.float64(0.25), 'G02': np.float64(0.352), 'G03': np.float64(0.852), 'G04': np.float64(0.856)} | mean 0.578
+v3+.3abs_avg     pooled 0.748 thr 2.50 K2 rel0.7 | {'G01': np.float64(0.526), 'G02': np.float64(0.65), 'G03': np.float64(0.906), 'G04': np.float64(0.852)} | mean 0.734

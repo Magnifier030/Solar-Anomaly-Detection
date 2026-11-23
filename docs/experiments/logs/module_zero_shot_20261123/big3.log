@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "/tmp/claude-1037/-home-M11509204-researchs-Solar-Anomaly-Detection/0cf09159-fee3-4272-8044-ba52344e6ad2/scratchpad/crack_big3.py", line 86, in <module>
+    flush(crops, meta)
+    ~~~~~^^^^^^^^^^^^^
+  File "/tmp/claude-1037/-home-M11509204-researchs-Solar-Anomaly-Detection/0cf09159-fee3-4272-8044-ba52344e6ad2/scratchpad/crack_big3.py", line 69, in flush
+    if crops: F.append(desc(crops)); META.extend(meta)
+                       ~~~~^^^^^^^
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+  File "/tmp/claude-1037/-home-M11509204-researchs-Solar-Anomaly-Detection/0cf09159-fee3-4272-8044-ba52344e6ad2/scratchpad/crack_big3.py", line 60, in desc
+    h = model.forward_features((x - MEAN) / STD)[:, NPRE:].float()
+        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/timm/models/eva.py", line 1157, in forward_features
+    x = self.patch_embed(x)
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/timm/layers/patch_embed.py", line 139, in forward
+    x = self.proj(x)
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/torch/nn/modules/conv.py", line 553, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/M11509204/researchs/Solar-Anomaly-Detection/.venv/lib/python3.14/site-packages/torch/nn/modules/conv.py", line 548, in _conv_forward
+    return F.conv2d(
+           ~~~~~~~~^
+        input, weight, bias, self.stride, self.padding, self.dilation, self.groups
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+RuntimeError: Input type (float) and bias type (c10::Half) should be the same

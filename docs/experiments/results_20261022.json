@@ -1,0 +1,1984 @@
+{
+  "recorded_at_utc": "2026-10-22T15:48:30.108256+00:00",
+  "epoch_convention": "display=raw+1; epochs_recorded counts completed validation events",
+  "active_project_training_processes": [],
+  "runs": [
+    {
+      "run": "20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch",
+      "path": "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch",
+      "status": "incomplete_saved_run",
+      "epochs_recorded": 38,
+      "last_completed_epoch_display": 38,
+      "best_epoch_raw": 37,
+      "best_epoch_display": 38,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.8783577883636341,
+      "best_validation": {
+        "mean_iou": 0.9443252650420546,
+        "dice": 0.9544179556110152,
+        "TIoU_hotspot": 0.8783577883636341,
+        "F1_TIoU": 0.8783577883636341
+      },
+      "last_validation": {
+        "mean_iou": 0.9443252650420546,
+        "dice": 0.9544179556110152,
+        "TIoU_hotspot": 0.8783577883636341,
+        "F1_TIoU": 0.8783577883636341
+      },
+      "saved_global_step": 4000,
+      "checkpoint_epoch_raw": 38,
+      "checkpoint_next_batch": 10,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "two",
+        "deep_supervision": true
+      },
+      "image_size": 256,
+      "split_strategy": "random_stratified",
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": 837,
+      "validation_samples": 209,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/latest.pt",
+      "resolved_config_sha256": "fb86617ccc98a17d496e666934f97c3fc78ab59a42151d7c37ef2f5f34795333",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": "b328b9cec5b474f464f2b3492d2651214f40585434c3b7d88de2fb64529543ad",
+      "artifact_paths": [
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/data_manifest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/train_log.jsonl",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/best.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/train.log",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/resolved_config.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/latest.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/latest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/wandb_run.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch/history.json"
+      ]
+    },
+    {
+      "run": "20261019_2305_dnanet-r18-c2-seed7-v2_solar-ir-dnanet-from-scratch",
+      "path": "outputs/20261019_2305_dnanet-r18-c2-seed7-v2_solar-ir-dnanet-from-scratch",
+      "status": "config_only_no_training_evidence",
+      "epochs_recorded": 0,
+      "last_completed_epoch_display": null,
+      "best_epoch_raw": null,
+      "best_epoch_display": null,
+      "selection_metric": "F1_TIoU",
+      "best_metric": null,
+      "best_validation": {},
+      "last_validation": {},
+      "saved_global_step": null,
+      "checkpoint_epoch_raw": null,
+      "checkpoint_next_batch": null,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "two",
+        "deep_supervision": true
+      },
+      "image_size": 256,
+      "split_strategy": "group",
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "loss": "dice",
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": null,
+      "validation_samples": null,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2305_dnanet-r18-c2-seed7-v2_solar-ir-dnanet-from-scratch/resolved_config.json",
+      "resolved_config_sha256": "4afa441187619a57da1ebbfbf58526f4e3bd6c0c13336bd9dd5fa93be3b7ae91",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": null,
+      "artifact_paths": [
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v2_solar-ir-dnanet-from-scratch/data_manifest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v2_solar-ir-dnanet-from-scratch/resolved_config.json"
+      ]
+    },
+    {
+      "run": "20261019_2305_dnanet-r18-c2-seed7-v3_solar-ir-dnanet-from-scratch",
+      "path": "outputs/20261019_2305_dnanet-r18-c2-seed7-v3_solar-ir-dnanet-from-scratch",
+      "status": "config_only_no_training_evidence",
+      "epochs_recorded": 0,
+      "last_completed_epoch_display": null,
+      "best_epoch_raw": null,
+      "best_epoch_display": null,
+      "selection_metric": "F1_TIoU",
+      "best_metric": null,
+      "best_validation": {},
+      "last_validation": {},
+      "saved_global_step": null,
+      "checkpoint_epoch_raw": null,
+      "checkpoint_next_batch": null,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "two",
+        "deep_supervision": true
+      },
+      "image_size": 256,
+      "split_strategy": "group",
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "loss": "dice",
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": null,
+      "validation_samples": null,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2305_dnanet-r18-c2-seed7-v3_solar-ir-dnanet-from-scratch/resolved_config.json",
+      "resolved_config_sha256": "002e1d1bd35026efe92a5a7df54ffcecedeb49956f21a44ddcf6767ff2ac0ca6",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": null,
+      "artifact_paths": [
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v3_solar-ir-dnanet-from-scratch/data_manifest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v3_solar-ir-dnanet-from-scratch/resolved_config.json"
+      ]
+    },
+    {
+      "run": "20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch",
+      "path": "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch",
+      "status": "complete",
+      "epochs_recorded": 32,
+      "last_completed_epoch_display": 32,
+      "best_epoch_raw": 6,
+      "best_epoch_display": 7,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.0007490854523928564,
+      "best_validation": {
+        "mean_iou": 0.0030641546885343423,
+        "dice": 0.006108022484679283,
+        "TIoU_hotspot": 0.0007490854523928564,
+        "F1_TIoU": 0.0007490854523928564
+      },
+      "last_validation": {
+        "mean_iou": 0.00332364472544949,
+        "dice": 0.006623637639909387,
+        "TIoU_hotspot": 0.00014576143370274576,
+        "F1_TIoU": 0.00014576143370274576
+      },
+      "saved_global_step": 3328,
+      "checkpoint_epoch_raw": 6,
+      "checkpoint_next_batch": 0,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "two",
+        "deep_supervision": true
+      },
+      "image_size": 256,
+      "split_strategy": "group",
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "loss": "dice",
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/latest.pt",
+      "resolved_config_sha256": "8d787c1bf015671987407c2aa3ce8cb4a80d45deba199e6a5b79cec93f5c4842",
+      "resolved_checkpoint_differences": {
+        "task": {
+          "checkpoint": {
+            "factory": "solar_ir.task:create_task",
+            "dataset_root": "data/raw/datasets/9_16_train_set",
+            "groups_csv": "data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv",
+            "supervision": "polygon_mask",
+            "split_strategy": "group",
+            "image_size": 256,
+            "validation_fraction": 0.2,
+            "metric_threshold": 0.5,
+            "model": {
+              "factory": "solar_ir.models.dnanet:create_model",
+              "input_channels": 1,
+              "num_classes": 1,
+              "backbone": "resnet_18",
+              "channel_size": "two",
+              "deep_supervision": true
+            }
+          },
+          "resolved": {
+            "factory": "solar_ir.task:create_task",
+            "dataset_root": "data/raw/datasets/9_16_train_set",
+            "groups_csv": "data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv",
+            "supervision": "polygon_mask",
+            "split_strategy": "group",
+            "image_size": 256,
+            "validation_fraction": 0.2,
+            "metric_threshold": 0.5,
+            "augmentation": {
+              "enabled": true,
+              "horizontal_flip_prob": 0.5,
+              "scale_min": 0.5,
+              "scale_max": 2.0,
+              "gaussian_blur_prob": 0.5
+            },
+            "model": {
+              "factory": "solar_ir.models.dnanet:create_model",
+              "input_channels": 1,
+              "num_classes": 1,
+              "backbone": "resnet_18",
+              "channel_size": "two",
+              "deep_supervision": true
+            }
+          }
+        }
+      },
+      "metrics_sha256": "d59f5b8293f438b933dc7237840814c74fa34de298321c1413b0c200e8831d03",
+      "best_checkpoint_sha256": "5c0673c447a64f442809dd31b6c0204205fe974e951d8db299b1dff59cf1c9fc",
+      "artifact_paths": [
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/data_manifest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/train_log.jsonl",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/best.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/train.log",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/resolved_config.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/latest.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/latest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/wandb_run.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/metrics.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch/history.json"
+      ]
+    },
+    {
+      "run": "20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch",
+      "path": "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch",
+      "status": "incomplete_saved_run",
+      "epochs_recorded": 25,
+      "last_completed_epoch_display": 25,
+      "best_epoch_raw": 17,
+      "best_epoch_display": 18,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.0005796177406638195,
+      "best_validation": {
+        "mean_iou": 0.009094206352075416,
+        "dice": 0.01801559026112827,
+        "TIoU_hotspot": 0.0005796177406638195,
+        "F1_TIoU": 0.0005796177406638195
+      },
+      "last_validation": {
+        "mean_iou": 0.005546976994219292,
+        "dice": 0.011029862349925364,
+        "TIoU_hotspot": 0.00045310334045373763,
+        "F1_TIoU": 0.00045310334045373763
+      },
+      "saved_global_step": 2700,
+      "checkpoint_epoch_raw": 25,
+      "checkpoint_next_batch": 100,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "two",
+        "deep_supervision": true
+      },
+      "image_size": 256,
+      "split_strategy": "group",
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "loss": "dice",
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/latest.pt",
+      "resolved_config_sha256": "6172328c553132450af421fe1c04803026d3939cbcf72b96fbdc9c4874fd1384",
+      "resolved_checkpoint_differences": {
+        "task": {
+          "checkpoint": {
+            "factory": "solar_ir.task:create_task",
+            "dataset_root": "data/raw/datasets/9_16_train_set",
+            "groups_csv": "data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv",
+            "supervision": "polygon_mask",
+            "split_strategy": "group",
+            "image_size": 256,
+            "validation_fraction": 0.2,
+            "metric_threshold": 0.5,
+            "augmentation": {
+              "enabled": true,
+              "horizontal_flip_prob": 0.5,
+              "scale_min": 0.5,
+              "scale_max": 2.0,
+              "gaussian_blur_prob": 0.5
+            },
+            "model": {
+              "factory": "solar_ir.models.dnanet:create_model",
+              "input_channels": 1,
+              "num_classes": 1,
+              "backbone": "resnet_18",
+              "channel_size": "two",
+              "deep_supervision": true
+            }
+          },
+          "resolved": {
+            "factory": "solar_ir.task:create_task",
+            "dataset_root": "data/raw/datasets/9_16_train_set",
+            "groups_csv": "data/raw/supplement/SolarDefectDataset_supplement/train_groups.csv",
+            "supervision": "polygon_mask",
+            "split_strategy": "group",
+            "image_size": [
+              640,
+              512
+            ],
+            "validation_fraction": 0.2,
+            "metric_threshold": 0.5,
+            "augmentation": {
+              "enabled": true,
+              "horizontal_flip_prob": 0.5,
+              "scale_min": 0.5,
+              "scale_max": 2.0,
+              "gaussian_blur_prob": 0.5
+            },
+            "model": {
+              "factory": "solar_ir.models.dnanet:create_model",
+              "input_channels": 1,
+              "num_classes": 1,
+              "backbone": "resnet_18",
+              "channel_size": "two",
+              "deep_supervision": true
+            }
+          }
+        },
+        "training": {
+          "checkpoint": {
+            "seed": 7,
+            "loss": "dice",
+            "batch_size": 8,
+            "max_epochs": 150,
+            "patience": 25,
+            "learning_rate": 0.0001,
+            "gradient_clip": 1.0,
+            "checkpoint_every_steps": 100,
+            "selection_metric": "F1_TIoU",
+            "selection_mode": "max",
+            "amp": true
+          },
+          "resolved": {
+            "seed": 7,
+            "loss": "dice",
+            "batch_size": 2,
+            "max_epochs": 150,
+            "patience": 25,
+            "learning_rate": 0.0001,
+            "gradient_clip": 1.0,
+            "checkpoint_every_steps": 100,
+            "selection_metric": "F1_TIoU",
+            "selection_mode": "max",
+            "amp": true
+          }
+        }
+      },
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": "0240be135fc0193be3a58ca3e85b04108ad901021276aaff9bf85bd8f610faa4",
+      "artifact_paths": [
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/data_manifest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/train_log.jsonl",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/best.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/train.log",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/resolved_config.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/latest.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/latest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/wandb_run.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch/history.json"
+      ]
+    },
+    {
+      "run": "20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch",
+      "path": "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch",
+      "status": "complete",
+      "epochs_recorded": 30,
+      "last_completed_epoch_display": 30,
+      "best_epoch_raw": 4,
+      "best_epoch_display": 5,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.007966161880729105,
+      "best_validation": {
+        "mean_iou": 0.010492299074928919,
+        "dice": 0.020740677273547115,
+        "TIoU_hotspot": 0.007966161880729105,
+        "F1_TIoU": 0.007966161880729105
+      },
+      "last_validation": {
+        "mean_iou": 0.010050471512632872,
+        "dice": 0.019875381374319597,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "saved_global_step": 12480,
+      "checkpoint_epoch_raw": 4,
+      "checkpoint_next_batch": 0,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "two",
+        "deep_supervision": true
+      },
+      "image_size": [
+        640,
+        512
+      ],
+      "split_strategy": "group",
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "loss": "dice",
+        "batch_size": 2,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/latest.pt",
+      "resolved_config_sha256": "926832f491964784237811a0a4982f768480873348e78d0bda744e259fa6f8d9",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": "f986d065216d294b25e643cf1cc88cf1d55005f06056f7dd0d7120129d0ecc29",
+      "best_checkpoint_sha256": "56fec83c0bc2f64bb1f5b356308de1865446b92db6224fa49f10e1e03276c76d",
+      "artifact_paths": [
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/data_manifest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/train_log.jsonl",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/best.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/train.log",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/resolved_config.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/latest.pt",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/latest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/wandb_run.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/metrics.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch/history.json"
+      ]
+    },
+    {
+      "run": "20261019_2305_dnanet-r18-c2-seed7-vˇ_solar-ir-dnanet-from-scratch",
+      "path": "outputs/20261019_2305_dnanet-r18-c2-seed7-vˇ_solar-ir-dnanet-from-scratch",
+      "status": "config_only_no_training_evidence",
+      "epochs_recorded": 0,
+      "last_completed_epoch_display": null,
+      "best_epoch_raw": null,
+      "best_epoch_display": null,
+      "selection_metric": "F1_TIoU",
+      "best_metric": null,
+      "best_validation": {},
+      "last_validation": {},
+      "saved_global_step": null,
+      "checkpoint_epoch_raw": null,
+      "checkpoint_next_batch": null,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "two",
+        "deep_supervision": true
+      },
+      "image_size": 256,
+      "split_strategy": "group",
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "loss": "dice",
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": null,
+      "validation_samples": null,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2305_dnanet-r18-c2-seed7-vˇ_solar-ir-dnanet-from-scratch/resolved_config.json",
+      "resolved_config_sha256": "49297b3a50985d1b531c41cff0f915b6d08df9629af4ce64edab1c4610396232",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": null,
+      "artifact_paths": [
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-vˇ_solar-ir-dnanet-from-scratch/data_manifest.json",
+        "outputs/20261019_2305_dnanet-r18-c2-seed7-vˇ_solar-ir-dnanet-from-scratch/resolved_config.json"
+      ]
+    },
+    {
+      "run": "20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet",
+      "path": "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet",
+      "status": "incomplete_saved_run",
+      "epochs_recorded": 21,
+      "last_completed_epoch_display": 21,
+      "best_epoch_raw": 0,
+      "best_epoch_display": 1,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 8.615353326021973e-05,
+      "best_validation": {
+        "mean_iou": 0.0047518542479572864,
+        "dice": 0.009456806303210987,
+        "TIoU_hotspot": 8.615353326021973e-05,
+        "F1_TIoU": 8.615353326021973e-05
+      },
+      "last_validation": {
+        "mean_iou": 6.685856965889714e-10,
+        "dice": 6.685856965889714e-10,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "saved_global_step": 2200,
+      "checkpoint_epoch_raw": 21,
+      "checkpoint_next_batch": 16,
+      "model": {
+        "factory": "solar_ir.models.simple_unet:create_model",
+        "base_channels": 16
+      },
+      "image_size": 256,
+      "split_strategy": null,
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/latest.pt",
+      "resolved_config_sha256": "ad26d2ce45d13ecd14af5e97bf09ed46498b632d875ab0457a484bcea5ab04da",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": "9d9a92cc4ba84e68462555edb6094c7eb4ffe604b70dfd2647cbec94a8612425",
+      "artifact_paths": [
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/data_manifest.json",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/train_log.jsonl",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/best.pt",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/train.log",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/resolved_config.json",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/latest.pt",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/latest.json",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/wandb_run.json",
+        "outputs/20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet/history.json"
+      ]
+    },
+    {
+      "run": "20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet",
+      "path": "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet",
+      "status": "complete",
+      "epochs_recorded": 32,
+      "last_completed_epoch_display": 32,
+      "best_epoch_raw": 6,
+      "best_epoch_display": 7,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.00013873917547466852,
+      "best_validation": {
+        "mean_iou": 0.004472666508815976,
+        "dice": 0.008886913085559008,
+        "TIoU_hotspot": 0.00013873917547466852,
+        "F1_TIoU": 0.00013873917547466852
+      },
+      "last_validation": {
+        "mean_iou": 6.958322245477057e-10,
+        "dice": 6.958322245477057e-10,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "saved_global_step": 3328,
+      "checkpoint_epoch_raw": 6,
+      "checkpoint_next_batch": 0,
+      "model": {
+        "factory": "solar_ir.models.simple_unet:create_model",
+        "base_channels": 16
+      },
+      "image_size": 256,
+      "split_strategy": null,
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "batch_size": 8,
+        "max_epochs": 150,
+        "patience": 25,
+        "learning_rate": 0.0001,
+        "gradient_clip": 1.0,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": true
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/latest.pt",
+      "resolved_config_sha256": "2085dc031e23884aa3e41576b6ac150bb69ccea366347edd610d39774784081e",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": "d2b3c6aa37132d761e7c394a4d5f4de092c4d885a62c3ca465c0908ef3108ba3",
+      "best_checkpoint_sha256": "b1cbba62d21355fc2b951e085ab88617bf57dae86732b467591d2a5ce80eacbc",
+      "artifact_paths": [
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/data_manifest.json",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/train_log.jsonl",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/best.pt",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/train.log",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/resolved_config.json",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/latest.pt",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/latest.json",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/wandb_run.json",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/metrics.json",
+        "outputs/20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet/history.json"
+      ]
+    },
+    {
+      "run": "pvhsd-dnanet-1ch-pretrain",
+      "path": "outputs/pvhsd-dnanet-1ch-pretrain",
+      "status": "incomplete_saved_run",
+      "epochs_recorded": 372,
+      "last_completed_epoch_display": 372,
+      "best_epoch_raw": 370,
+      "best_epoch_display": 371,
+      "selection_metric": "weak_mask_iou",
+      "best_metric": 0.5991364763539787,
+      "best_validation": {
+        "weak_mask_iou": 0.5991364763539787,
+        "weak_mask_dice": 0.7493250078569397
+      },
+      "last_validation": {
+        "weak_mask_iou": 0.5893685670416955,
+        "weak_mask_dice": 0.7416386346923253
+      },
+      "saved_global_step": 306200,
+      "checkpoint_epoch_raw": 372,
+      "checkpoint_next_batch": 788,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "three",
+        "deep_supervision": true
+      },
+      "image_size": [
+        640,
+        512
+      ],
+      "split_strategy": null,
+      "validation_groups": null,
+      "preprocessing": null,
+      "training": {
+        "seed": 7,
+        "loss": "soft_iou",
+        "optimizer": "Adagrad",
+        "scheduler": "upstream_once",
+        "min_lr": 1e-05,
+        "drop_last": true,
+        "batch_size": 4,
+        "max_epochs": 1500,
+        "patience": 1500,
+        "learning_rate": 0.05,
+        "gradient_clip": null,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "weak_mask_iou",
+        "selection_mode": "max",
+        "amp": false
+      },
+      "train_samples": 3284,
+      "validation_samples": 739,
+      "finetuning": null,
+      "metric_aggregation": null,
+      "config_source": "outputs/pvhsd-dnanet-1ch-pretrain/latest.pt",
+      "resolved_config_sha256": "4e19b7709bbd464c49ee22c64ea668c17a5d72a34ef9b81739a467253938c993",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": "814c9731d70d52163e484d5a062f87809c239f259f590ab2915b58ed6df83b5f",
+      "artifact_paths": [
+        "outputs/pvhsd-dnanet-1ch-pretrain/data_manifest.json",
+        "outputs/pvhsd-dnanet-1ch-pretrain/train_log.jsonl",
+        "outputs/pvhsd-dnanet-1ch-pretrain/best.pt",
+        "outputs/pvhsd-dnanet-1ch-pretrain/train.log",
+        "outputs/pvhsd-dnanet-1ch-pretrain/resolved_config.json",
+        "outputs/pvhsd-dnanet-1ch-pretrain/latest.pt",
+        "outputs/pvhsd-dnanet-1ch-pretrain/history.json"
+      ]
+    },
+    {
+      "run": "solar-ir-dnanet-1ch-pvhsd-finetune-cudnn",
+      "path": "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn",
+      "status": "incomplete_saved_run",
+      "epochs_recorded": 17,
+      "last_completed_epoch_display": 17,
+      "best_epoch_raw": 0,
+      "best_epoch_display": 1,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.0,
+      "best_validation": {
+        "mean_iou": 0.0,
+        "dice": 4.891769597628021e-12,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "last_validation": {
+        "mean_iou": 0.0,
+        "dice": 4.891769597628021e-12,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "saved_global_step": 3519,
+      "checkpoint_epoch_raw": 17,
+      "checkpoint_next_batch": 0,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "three",
+        "deep_supervision": true,
+        "pretrained_path": "outputs/pvhsd-dnanet-1ch-pretrain/best.pt"
+      },
+      "image_size": [
+        640,
+        512
+      ],
+      "split_strategy": "group",
+      "validation_groups": [
+        "G02",
+        "G05",
+        "G08"
+      ],
+      "preprocessing": "grayscale",
+      "training": {
+        "seed": 7,
+        "loss": "soft_iou",
+        "optimizer": "Adagrad",
+        "scheduler": "upstream_once",
+        "min_lr": 1e-05,
+        "drop_last": true,
+        "batch_size": 4,
+        "max_epochs": 1500,
+        "patience": 50,
+        "learning_rate": 0.005,
+        "gradient_clip": null,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": false
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": null,
+      "metric_aggregation": "global",
+      "config_source": "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/latest.pt",
+      "resolved_config_sha256": "f138ea63a083fe199b20b506e71d44284b1bd7bdc0a58e56b0c64ea8622741de",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": "d0be2a3f913a9449f80661b49cd87872b28bc5e491870a94b1ff8609c39891dc",
+      "artifact_paths": [
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/data_manifest.json",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/runtime_backend.json",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/train_log.jsonl",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/best.pt",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/train.log",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/console.log",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/resolved_config.json",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/latest.pt",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/history.json"
+      ]
+    },
+    {
+      "run": "solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo",
+      "path": "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo",
+      "status": "complete",
+      "epochs_recorded": 111,
+      "last_completed_epoch_display": 111,
+      "best_epoch_raw": 60,
+      "best_epoch_display": 61,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.7497724981035706,
+      "best_validation": {
+        "mean_iou": 0.9387207112355904,
+        "dice": 0.9683918945058699,
+        "TIoU_hotspot": 0.7497724981035706,
+        "F1_TIoU": 0.7497724981035706
+      },
+      "last_validation": {
+        "mean_iou": 0.9348815367874338,
+        "dice": 0.9663449870317828,
+        "TIoU_hotspot": 0.6164462109467174,
+        "F1_TIoU": 0.6164462109467174
+      },
+      "saved_global_step": 23199,
+      "checkpoint_epoch_raw": 60,
+      "checkpoint_next_batch": 0,
+      "model": {
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "backbone": "resnet_18",
+        "channel_size": "three",
+        "deep_supervision": true,
+        "pretrained_path": "outputs/pvhsd-dnanet-1ch-pretrain/best.pt"
+      },
+      "image_size": [
+        640,
+        512
+      ],
+      "split_strategy": "photo_stratified",
+      "validation_groups": null,
+      "preprocessing": "grayscale",
+      "training": {
+        "seed": 7,
+        "loss": "soft_iou",
+        "optimizer": "Adagrad",
+        "scheduler": "upstream_once",
+        "min_lr": 1e-05,
+        "drop_last": true,
+        "batch_size": 4,
+        "max_epochs": 1500,
+        "patience": 50,
+        "learning_rate": 0.005,
+        "gradient_clip": null,
+        "checkpoint_every_steps": 100,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "amp": false
+      },
+      "train_samples": 838,
+      "validation_samples": 208,
+      "finetuning": null,
+      "metric_aggregation": "global",
+      "config_source": "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/latest.pt",
+      "resolved_config_sha256": "92f6e968d8e1a011b7af998e6e7dfbcbbe2078af50d13a8cbfe3af8e0be22536",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": "1c9cdc34020061d0d6588a241ae18a55812272be8e05298a85d7bd258d9c588f",
+      "best_checkpoint_sha256": "2665cff0fa686ddab8de51656aa76438fe5a35bde68d395a7714e730eff81dcf",
+      "artifact_paths": [
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/data_manifest.json",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/runtime_backend.json",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/train_log.jsonl",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/best.pt",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/train.log",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/console.log",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/resolved_config.json",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/latest.pt",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/metrics.json",
+        "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo/history.json"
+      ]
+    },
+    {
+      "run": "solar-ir-dnanet-pvhsd-group-freeze_early",
+      "path": "outputs/solar-ir-dnanet-pvhsd-group-freeze_early",
+      "status": "complete",
+      "epochs_recorded": 53,
+      "last_completed_epoch_display": 53,
+      "best_epoch_raw": 2,
+      "best_epoch_display": 3,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 3.9937520755297846e-05,
+      "best_validation": {
+        "mean_iou": 0.0035736278869046177,
+        "dice": 0.007121805097322695,
+        "TIoU_hotspot": 3.9937520755297846e-05,
+        "F1_TIoU": 3.9937520755297846e-05
+      },
+      "last_validation": {
+        "mean_iou": 0.0,
+        "dice": 4.891769597628021e-12,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "saved_global_step": 10971,
+      "checkpoint_epoch_raw": 2,
+      "checkpoint_next_batch": 0,
+      "model": {
+        "backbone": "resnet_18",
+        "channel_size": "three",
+        "deep_supervision": true,
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "pretrained_path": "outputs/pvhsd-dnanet-1ch-pretrain/best.pt"
+      },
+      "image_size": [
+        640,
+        512
+      ],
+      "split_strategy": "group",
+      "validation_groups": [
+        "G02",
+        "G05",
+        "G08"
+      ],
+      "preprocessing": "grayscale",
+      "training": {
+        "amp": false,
+        "batch_size": 4,
+        "checkpoint_every_steps": 100,
+        "drop_last": true,
+        "gradient_clip": null,
+        "learning_rate": 0.005,
+        "loss": "soft_iou",
+        "max_epochs": 1500,
+        "min_lr": 1e-05,
+        "optimizer": "Adagrad",
+        "patience": 50,
+        "scheduler": "upstream_once",
+        "seed": 7,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "finetuning": {
+          "mode": "freeze_modules",
+          "modules": [
+            "conv0_0",
+            "conv1_0",
+            "conv2_0"
+          ],
+          "freeze_running_stats": true
+        }
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": {
+        "mode": "freeze_modules",
+        "frozen_modules": [
+          "conv0_0",
+          "conv1_0",
+          "conv2_0"
+        ],
+        "frozen_running_stats": true,
+        "trainable_parameters": 4526878,
+        "frozen_parameters": 169690,
+        "total_parameters": 4696568
+      },
+      "metric_aggregation": "global",
+      "config_source": "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/latest.pt",
+      "resolved_config_sha256": "c6b42ec6be707551ac3e70115c18db28594aff4a2a7e4bcf02edcb06f121a52b",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": "addfe398f562a28eeeeb40a45a5bd36c224f7e5f776761775bf9beae015a8f4a",
+      "best_checkpoint_sha256": "bdda6753ded095f57eeb210c1706ee7645ed3c5b39af15067b893870cff64be3",
+      "artifact_paths": [
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/data_manifest.json",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/runtime_backend.json",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/train_log.jsonl",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/best.pt",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/train.log",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/console.log",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/resolved_config.json",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/latest.pt",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/metrics.json",
+        "outputs/solar-ir-dnanet-pvhsd-group-freeze_early/history.json"
+      ]
+    },
+    {
+      "run": "solar-ir-dnanet-pvhsd-group-full",
+      "path": "outputs/solar-ir-dnanet-pvhsd-group-full",
+      "status": "incomplete_saved_run",
+      "epochs_recorded": 8,
+      "last_completed_epoch_display": 8,
+      "best_epoch_raw": 0,
+      "best_epoch_display": 1,
+      "selection_metric": "F1_TIoU",
+      "best_metric": 0.0,
+      "best_validation": {
+        "mean_iou": 0.0,
+        "dice": 4.891769597628021e-12,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "last_validation": {
+        "mean_iou": 0.0,
+        "dice": 4.891769597628021e-12,
+        "TIoU_hotspot": 0.0,
+        "F1_TIoU": 0.0
+      },
+      "saved_global_step": 1700,
+      "checkpoint_epoch_raw": 8,
+      "checkpoint_next_batch": 44,
+      "model": {
+        "backbone": "resnet_18",
+        "channel_size": "three",
+        "deep_supervision": true,
+        "factory": "solar_ir.models.dnanet:create_model",
+        "input_channels": 1,
+        "num_classes": 1,
+        "pretrained_path": "outputs/pvhsd-dnanet-1ch-pretrain/best.pt"
+      },
+      "image_size": [
+        640,
+        512
+      ],
+      "split_strategy": "group",
+      "validation_groups": [
+        "G02",
+        "G05",
+        "G08"
+      ],
+      "preprocessing": "grayscale",
+      "training": {
+        "amp": false,
+        "batch_size": 4,
+        "checkpoint_every_steps": 100,
+        "drop_last": true,
+        "gradient_clip": null,
+        "learning_rate": 0.005,
+        "loss": "soft_iou",
+        "max_epochs": 1500,
+        "min_lr": 1e-05,
+        "optimizer": "Adagrad",
+        "patience": 50,
+        "scheduler": "upstream_once",
+        "seed": 7,
+        "selection_metric": "F1_TIoU",
+        "selection_mode": "max",
+        "finetuning": {
+          "mode": "full"
+        }
+      },
+      "train_samples": 831,
+      "validation_samples": 215,
+      "finetuning": {
+        "mode": "full",
+        "frozen_modules": [],
+        "frozen_running_stats": false,
+        "trainable_parameters": 4696568,
+        "frozen_parameters": 0,
+        "total_parameters": 4696568
+      },
+      "metric_aggregation": "global",
+      "config_source": "outputs/solar-ir-dnanet-pvhsd-group-full/latest.pt",
+      "resolved_config_sha256": "9acd569f2748876fce5e9d94b8b437f617ba56289d20375cf4e211c8380a89bd",
+      "resolved_checkpoint_differences": {},
+      "metrics_sha256": null,
+      "best_checkpoint_sha256": "7d4aa80ef72d536f3ccede1bb94d99ef13570d1938c1cb5cb3ad16516341d002",
+      "artifact_paths": [
+        "outputs/solar-ir-dnanet-pvhsd-group-full/data_manifest.json",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/runtime_backend.json",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/train_log.jsonl",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/best.pt",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/train.log",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/console.log",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/resolved_config.json",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/latest.pt",
+        "outputs/solar-ir-dnanet-pvhsd-group-full/history.json"
+      ]
+    }
+  ],
+  "notes": [
+    "No historical missing defaults are inferred from current code.",
+    "Incomplete runs have no claim of full training completion.",
+    "Different splits, resolutions and aggregation policies are not matched comparisons."
+  ],
+  "evaluations": {
+    "transfer_validation": {
+      "source": "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/analysis/transfer_validation_20261022/result.json",
+      "sha256": "97614b457d605318a3ce3e0cf1e6cf4c4ecaece22e4163cf11d155db729e01ba",
+      "result": {
+        "created_at_utc": "2026-10-22T06:41:31.038242+00:00",
+        "config": "configs/pvhsd2025/finetune_solar_dnanet_1ch_cudnn.yaml",
+        "samples": 215,
+        "device": "cuda",
+        "models": {
+          "pretrained": {
+            "source": "outputs/pvhsd-dnanet-1ch-pretrain/best.pt",
+            "snapshot_sha256": "814c9731d70d52163e484d5a062f87809c239f259f590ab2915b58ed6df83b5f",
+            "checkpoint_epoch_raw": 370,
+            "step": null,
+            "thresholds": {
+              "0.05": {
+                "tp": 7687,
+                "fp": 5670,
+                "fn": 196738,
+                "predicted_pixels": 13357,
+                "intersection": 7687,
+                "union": 210095,
+                "iou": 0.03658821009543302,
+                "dice": 0.07059352930912564
+              },
+              "0.1": {
+                "tp": 7645,
+                "fp": 5598,
+                "fn": 196780,
+                "predicted_pixels": 13243,
+                "intersection": 7645,
+                "union": 210023,
+                "iou": 0.03640077515319751,
+                "dice": 0.0702445926824338
+              },
+              "0.2": {
+                "tp": 7600,
+                "fp": 5522,
+                "fn": 196825,
+                "predicted_pixels": 13122,
+                "intersection": 7600,
+                "union": 209947,
+                "iou": 0.03619961228310002,
+                "dice": 0.06986995913526732
+              },
+              "0.3": {
+                "tp": 7573,
+                "fp": 5477,
+                "fn": 196852,
+                "predicted_pixels": 13050,
+                "intersection": 7573,
+                "union": 209902,
+                "iou": 0.036078741507941804,
+                "dice": 0.06964478675709852
+              },
+              "0.5": {
+                "tp": 7525,
+                "fp": 5396,
+                "fn": 196900,
+                "predicted_pixels": 12921,
+                "intersection": 7525,
+                "union": 209821,
+                "iou": 0.03586390304116366,
+                "dice": 0.0692444305393244
+              }
+            },
+            "official": {
+              "recall_numerator": 0.1343995762265979,
+              "recall_denominator": 190,
+              "precision_numerator": 3.9526702046736286,
+              "precision_denominator": 329,
+              "recall": 0.0007073661906663048,
+              "precision": 0.012014195150983674,
+              "F1_TIoU": 0.0013360679919137456
+            }
+          },
+          "finetuned": {
+            "source": "outputs/solar-ir-dnanet-1ch-pvhsd-finetune-cudnn/latest.pt",
+            "snapshot_sha256": "afe55bc3b4f66fb3e8f21a1ba007c89f20daf5a3810acdda888b5df6144cc48f",
+            "checkpoint_epoch_raw": 5,
+            "step": 1035,
+            "thresholds": {
+              "0.05": {
+                "tp": 0,
+                "fp": 0,
+                "fn": 204425,
+                "predicted_pixels": 0,
+                "intersection": 0,
+                "union": 204425,
+                "iou": 0.0,
+                "dice": 0.0
+              },
+              "0.1": {
+                "tp": 0,
+                "fp": 0,
+                "fn": 204425,
+                "predicted_pixels": 0,
+                "intersection": 0,
+                "union": 204425,
+                "iou": 0.0,
+                "dice": 0.0
+              },
+              "0.2": {
+                "tp": 0,
+                "fp": 0,
+                "fn": 204425,
+                "predicted_pixels": 0,
+                "intersection": 0,
+                "union": 204425,
+                "iou": 0.0,
+                "dice": 0.0
+              },
+              "0.3": {
+                "tp": 0,
+                "fp": 0,
+                "fn": 204425,
+                "predicted_pixels": 0,
+                "intersection": 0,
+                "union": 204425,
+                "iou": 0.0,
+                "dice": 0.0
+              },
+              "0.5": {
+                "tp": 0,
+                "fp": 0,
+                "fn": 204425,
+                "predicted_pixels": 0,
+                "intersection": 0,
+                "union": 204425,
+                "iou": 0.0,
+                "dice": 0.0
+              }
+            },
+            "official": {
+              "recall_numerator": 0.0,
+              "recall_denominator": 190,
+              "precision_numerator": 0.0,
+              "precision_denominator": 0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "F1_TIoU": 0.0
+            }
+          }
+        }
+      }
+    },
+    "test_analysis": {
+      "source": "outputs/submissions/dnanet-ir-only-photo-20261022/analysis/summary.json",
+      "sha256": "662e0c973223c8a6afe4376860da50aed9009d1b23a527908f9677cfb354ed78",
+      "result": {
+        "submission_sha256": "2d579ffbbc5fc760dd2a0433c0e3a598094349a927ea5e7b3085338239787cfa",
+        "style_definition": "RGB mean absolute R-G plus G-B distance <1 => gray; descriptive heuristic",
+        "polygon_areas_px": {
+          "min": 0.5,
+          "p10": 4.0,
+          "p25": 13.0,
+          "p50": 51.5,
+          "p75": 321.0,
+          "p90": 932.5,
+          "max": 1897.0
+        },
+        "objects_area_lt10": 27,
+        "objects_area_lt100": 86,
+        "objects_area_lt1000": 131,
+        "predicted_black_pixels": 142,
+        "test_by_style": {
+          "gray": {
+            "images": 496,
+            "images_with_predictions": 19,
+            "objects": 27,
+            "predicted_pixels": 5968
+          },
+          "color": {
+            "images": 200,
+            "images_with_predictions": 55,
+            "objects": 114,
+            "predicted_pixels": 32776
+          }
+        },
+        "inference": {
+          "finetuned": {
+            "all": {
+              "max_probability_distribution": {
+                "min": 7.077242958342111e-11,
+                "p10": 7.398870682795433e-10,
+                "p25": 1.9158931663376677e-09,
+                "p50": 4.503901918084807e-09,
+                "p75": 1.5825381005640793e-08,
+                "p90": 0.9984393119812012,
+                "max": 1.0
+              },
+              "thresholds": {
+                "0.001": {
+                  "images_with_foreground": 81,
+                  "foreground_pixels": 47346
+                },
+                "0.01": {
+                  "images_with_foreground": 80,
+                  "foreground_pixels": 44347
+                },
+                "0.05": {
+                  "images_with_foreground": 77,
+                  "foreground_pixels": 42270
+                },
+                "0.1": {
+                  "images_with_foreground": 76,
+                  "foreground_pixels": 41412
+                },
+                "0.3": {
+                  "images_with_foreground": 76,
+                  "foreground_pixels": 39744
+                },
+                "0.5": {
+                  "images_with_foreground": 76,
+                  "foreground_pixels": 38747
+                }
+              }
+            },
+            "gray": {
+              "max_probability_distribution": {
+                "min": 7.077242958342111e-11,
+                "p10": 5.483730969313427e-10,
+                "p25": 1.4044807816748772e-09,
+                "p50": 3.497950928910143e-09,
+                "p75": 7.425447146047759e-09,
+                "p90": 2.4238151929978358e-08,
+                "max": 1.0
+              },
+              "thresholds": {
+                "0.001": {
+                  "images_with_foreground": 19,
+                  "foreground_pixels": 7387
+                },
+                "0.01": {
+                  "images_with_foreground": 19,
+                  "foreground_pixels": 6835
+                },
+                "0.05": {
+                  "images_with_foreground": 19,
+                  "foreground_pixels": 6487
+                },
+                "0.1": {
+                  "images_with_foreground": 19,
+                  "foreground_pixels": 6358
+                },
+                "0.3": {
+                  "images_with_foreground": 19,
+                  "foreground_pixels": 6113
+                },
+                "0.5": {
+                  "images_with_foreground": 19,
+                  "foreground_pixels": 5966
+                }
+              }
+            },
+            "color": {
+              "max_probability_distribution": {
+                "min": 1.1147672784872498e-09,
+                "p10": 1.9635155723563003e-09,
+                "p25": 3.911801771394607e-09,
+                "p50": 1.5166901068397465e-08,
+                "p75": 0.9999955296516418,
+                "p90": 1.0,
+                "max": 1.0
+              },
+              "thresholds": {
+                "0.001": {
+                  "images_with_foreground": 62,
+                  "foreground_pixels": 39959
+                },
+                "0.01": {
+                  "images_with_foreground": 61,
+                  "foreground_pixels": 37512
+                },
+                "0.05": {
+                  "images_with_foreground": 58,
+                  "foreground_pixels": 35783
+                },
+                "0.1": {
+                  "images_with_foreground": 57,
+                  "foreground_pixels": 35054
+                },
+                "0.3": {
+                  "images_with_foreground": 57,
+                  "foreground_pixels": 33631
+                },
+                "0.5": {
+                  "images_with_foreground": 57,
+                  "foreground_pixels": 32781
+                }
+              }
+            }
+          },
+          "pretrained": {
+            "all": {
+              "max_probability_distribution": {
+                "min": 1.7769509197407274e-09,
+                "p10": 2.3008941418822815e-08,
+                "p25": 1.1716023884389415e-07,
+                "p50": 1.0344967904529767e-05,
+                "p75": 1.0,
+                "p90": 1.0,
+                "max": 1.0
+              },
+              "thresholds": {
+                "0.001": {
+                  "images_with_foreground": 297,
+                  "foreground_pixels": 93033
+                },
+                "0.01": {
+                  "images_with_foreground": 296,
+                  "foreground_pixels": 90966
+                },
+                "0.05": {
+                  "images_with_foreground": 295,
+                  "foreground_pixels": 89404
+                },
+                "0.1": {
+                  "images_with_foreground": 295,
+                  "foreground_pixels": 88734
+                },
+                "0.3": {
+                  "images_with_foreground": 291,
+                  "foreground_pixels": 87565
+                },
+                "0.5": {
+                  "images_with_foreground": 291,
+                  "foreground_pixels": 86858
+                }
+              }
+            },
+            "gray": {
+              "max_probability_distribution": {
+                "min": 1.7769509197407274e-09,
+                "p10": 1.9729833766746196e-08,
+                "p25": 7.68268773043701e-08,
+                "p50": 2.2977475282459636e-06,
+                "p75": 1.0,
+                "p90": 1.0,
+                "max": 1.0
+              },
+              "thresholds": {
+                "0.001": {
+                  "images_with_foreground": 167,
+                  "foreground_pixels": 63763
+                },
+                "0.01": {
+                  "images_with_foreground": 166,
+                  "foreground_pixels": 62358
+                },
+                "0.05": {
+                  "images_with_foreground": 165,
+                  "foreground_pixels": 61295
+                },
+                "0.1": {
+                  "images_with_foreground": 165,
+                  "foreground_pixels": 60835
+                },
+                "0.3": {
+                  "images_with_foreground": 163,
+                  "foreground_pixels": 60079
+                },
+                "0.5": {
+                  "images_with_foreground": 163,
+                  "foreground_pixels": 59600
+                }
+              }
+            },
+            "color": {
+              "max_probability_distribution": {
+                "min": 1.587556575088911e-08,
+                "p10": 4.9288170345107586e-08,
+                "p25": 7.642618555792069e-07,
+                "p50": 1.0,
+                "p75": 1.0,
+                "p90": 1.0,
+                "max": 1.0
+              },
+              "thresholds": {
+                "0.001": {
+                  "images_with_foreground": 130,
+                  "foreground_pixels": 29270
+                },
+                "0.01": {
+                  "images_with_foreground": 130,
+                  "foreground_pixels": 28608
+                },
+                "0.05": {
+                  "images_with_foreground": 130,
+                  "foreground_pixels": 28109
+                },
+                "0.1": {
+                  "images_with_foreground": 130,
+                  "foreground_pixels": 27899
+                },
+                "0.3": {
+                  "images_with_foreground": 128,
+                  "foreground_pixels": 27486
+                },
+                "0.5": {
+                  "images_with_foreground": 128,
+                  "foreground_pixels": 27258
+                }
+              }
+            }
+          }
+        },
+        "validation": {
+          "G01": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 28012,
+            "images": 57,
+            "pixel_iou": 0.0,
+            "TIoU_hotspot": 0.0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {
+              "min": 27669.5,
+              "p10": 27669.5,
+              "p25": 27669.5,
+              "p50": 27669.5,
+              "p75": 27669.5,
+              "p90": 27669.5,
+              "max": 27669.5
+            }
+          },
+          "G07": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 12,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          },
+          "G02": {
+            "tp": 37364,
+            "fp": 594,
+            "fn": 1936,
+            "images": 39,
+            "pixel_iou": 0.9365819421466888,
+            "TIoU_hotspot": 0.7924310929874804,
+            "F1_TIoU": 0.7924310929874804,
+            "gt_polygon_areas_px": {
+              "min": 144.0,
+              "p10": 196.6,
+              "p25": 385.25,
+              "p50": 948.5,
+              "p75": 1549.25,
+              "p90": 1619.5500000000002,
+              "max": 1832.0
+            }
+          },
+          "G10": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 14,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          },
+          "G04": {
+            "tp": 1380558,
+            "fp": 21770,
+            "fn": 36771,
+            "images": 61,
+            "pixel_iou": 0.9593210752005248,
+            "TIoU_hotspot": 0.8112856130838206,
+            "F1_TIoU": 0.8112856130838206,
+            "gt_polygon_areas_px": {
+              "min": 14107.0,
+              "p10": 25067.85,
+              "p25": 28074.5,
+              "p50": 31423.5,
+              "p75": 37357.375,
+              "p90": 38461.95,
+              "max": 40878.0
+            }
+          },
+          "G08": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 1,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          },
+          "G03": {
+            "tp": 51433,
+            "fp": 877,
+            "fn": 5959,
+            "images": 4,
+            "pixel_iou": 0.8826820436252553,
+            "TIoU_hotspot": 0.12168344893977386,
+            "F1_TIoU": 0.12168344893977386,
+            "gt_polygon_areas_px": {
+              "min": 18156.0,
+              "p10": 18299.3,
+              "p25": 18514.25,
+              "p50": 18872.5,
+              "p75": 19016.5,
+              "p90": 19102.9,
+              "max": 19160.5
+            }
+          },
+          "G12": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 5,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          },
+          "G11": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 8,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          },
+          "G09": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 4,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          },
+          "G06": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 1,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          },
+          "G05": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "images": 2,
+            "pixel_iou": 0,
+            "F1_TIoU": 0.0,
+            "gt_polygon_areas_px": {}
+          }
+        },
+        "replay": {
+          "images": 696,
+          "differing_images": 10,
+          "disagreement_pixels": 11,
+          "total_pixels": 228065280,
+          "images_max_probability_lt_0_001": 615,
+          "note": "Original submission remains unchanged. Small numerical replay differences recorded explicitly."
+        },
+        "platform_result": {
+          "source": "user_reported_AIdea_result",
+          "submitted_filename": "submission.json",
+          "reported_identifier": "a41425664",
+          "submitted_at": "2026-10-22 22:00:03 Asia/Taipei",
+          "total_score": 0.0010203,
+          "F1_TEXT": 0.0,
+          "F1_TIoU": 0.00145,
+          "TIoU_crack": 0.0,
+          "TIoU_hotspot": 0.00437,
+          "TIoU_solar_panel": 0.0,
+          "ranking": "114/114",
+          "note": "Rounded displayed metrics; public/private subset identity not provided."
+        }
+      }
+    },
+    "platform_result_user_reported": {
+      "source": "outputs/submissions/dnanet-ir-only-photo-20261022/analysis/platform_result.json",
+      "sha256": "4a09dbf416d3901624fe88d9706c17845ff874e46b373fb0b20db3190ecfda96",
+      "result": {
+        "source": "user_reported_AIdea_result",
+        "submitted_filename": "submission.json",
+        "reported_identifier": "a41425664",
+        "submitted_at": "2026-10-22 22:00:03 Asia/Taipei",
+        "total_score": 0.0010203,
+        "F1_TEXT": 0.0,
+        "F1_TIoU": 0.00145,
+        "TIoU_crack": 0.0,
+        "TIoU_hotspot": 0.00437,
+        "TIoU_solar_panel": 0.0,
+        "ranking": "114/114",
+        "note": "Rounded displayed metrics; public/private subset identity not provided."
+      }
+    },
+    "drive_backup": {
+      "source": "outputs/submissions/dnanet-ir-only-photo-20261022/drive_backup_receipt.json",
+      "sha256": "24349a6eddaf6371a68dd8af02494a8b660ff52c58fff9aa891df308d9e94e80",
+      "result": {
+        "backed_up_at_utc": "2026-10-22T13:57:17.062113+00:00",
+        "remote_folder": "research-training/experiments/submissions/dnanet-ir-only-photo-20261022",
+        "files_verified": 701,
+        "verification": "rclone check (remote/local hashes) and downloaded submission SHA-256",
+        "submission_sha256": "2d579ffbbc5fc760dd2a0433c0e3a598094349a927ea5e7b3085338239787cfa",
+        "folder_id": null,
+        "submission_file_id": "1gRV04ifgt8XlL3YHj0BA1lk26aQ0m3y8",
+        "uploaded_to_competition": false
+      }
+    },
+    "pretraining_stop": {
+      "source": "outputs/pvhsd-dnanet-1ch-pretrain/analysis/pretraining_stop.json",
+      "sha256": "acf129e8c915becf7f23bfcc2db6064ab9deb25f879ee9e1f1bb81408c1a8863",
+      "result": {
+        "recorded_at_utc": "2026-10-22T06:28:02.903886+00:00",
+        "action": "user_requested_pretraining_stop_for_finetuning",
+        "signal": "SIGINT",
+        "pid": 3108677,
+        "resume_checkpoint": "outputs/pvhsd-dnanet-1ch-pretrain/latest.pt",
+        "saved_epoch": 372,
+        "saved_global_step": 306200,
+        "best_epoch": 370,
+        "best_metric": 0.5991364763539787,
+        "best_checkpoint": "outputs/pvhsd-dnanet-1ch-pretrain/best.pt",
+        "best_checkpoint_sha256": "814c9731d70d52163e484d5a062f87809c239f259f590ab2915b58ed6df83b5f",
+        "finetune_config": "configs/pvhsd2025/finetune_solar_dnanet_1ch_cudnn.yaml",
+        "finetune_scope": "all_parameters",
+        "finetune_started": false,
+        "trainable_parameters": 4696568
+      }
+    },
+    "cpu_verification_only": {
+      "source": "outputs/verification/pvhsd2025_1ch/result.json",
+      "sha256": "e8ef7c5154dd7364e0cd19092911f20afaddab7748ee5aa8156589c57713182e",
+      "result": {
+        "scope": "CPU verification on small real-data subsets, not full research training",
+        "pretraining": {
+          "status": "complete",
+          "seed": 7,
+          "global_step": 1,
+          "best_epoch": 0,
+          "best_metric": 0.000732421875,
+          "stopped_early": false,
+          "validation": {
+            "weak_mask_iou": 0.000732421875,
+            "weak_mask_dice": 0.0014637717734247654
+          },
+          "metadata": {
+            "dataset": "PV-HSD-2025",
+            "external_dataset": true,
+            "source_revision": "40748bc7c445cf9125f2cd25d115fa35bbeb17af",
+            "source_archive_sha256": "3fac0ae8e3e345e9f3d1c45afb4251530f79bfda8d772aacd708799a32416c32",
+            "prepared_manifest_sha256": "a5ec368defb33ab80996242c1d4d9b90c2fc09fe1ae01afeb90793df71b01b38",
+            "supervision": "bbox_raster_weak_mask",
+            "input_channels": 1,
+            "train_samples": 2,
+            "validation_samples": 2,
+            "split_policy": "sha256(seed:filename_family_hint), NOT verified physical scene groups",
+            "loss": "soft_iou",
+            "metrics_scope": "agreement with bbox weak masks, not competition F1_TIoU"
+          }
+        },
+        "fine_tuning": {
+          "status": "complete",
+          "seed": 7,
+          "global_step": 2,
+          "best_epoch": 0,
+          "best_metric": 0.00025195263290501383,
+          "stopped_early": false,
+          "validation": {
+            "mean_iou": 0.0006103515625,
+            "dice": 0.0012199585823337831,
+            "TIoU_hotspot": 0.00025195263290501383,
+            "F1_TIoU": 0.00025195263290501383
+          },
+          "metadata": {
+            "modality": "IR",
+            "anomaly_label": "hotspot",
+            "train_samples": 4,
+            "validation_samples": 4,
+            "split": "group",
+            "loss": "soft_iou",
+            "train_frames": [
+              "train_0001",
+              "train_0002",
+              "train_0012",
+              "train_0013"
+            ],
+            "validation_frames": [
+              "train_0005",
+              "train_0008",
+              "train_0059",
+              "train_0175"
+            ],
+            "optimizer": "Adagrad",
+            "scheduler": "upstream_once",
+            "metric_aggregation": "global",
+            "external_pretraining": {
+              "dataset": "PV-HSD-2025",
+              "source_revision": "40748bc7c445cf9125f2cd25d115fa35bbeb17af",
+              "supervision": "bbox_raster_weak_mask",
+              "prepared_manifest": "data/processed/pv_hsd2025/grayscale_box_masks_v1/manifest.json"
+            }
+          }
+        },
+        "native_input_shape": [
+          1,
+          1,
+          512,
+          640
+        ],
+        "native_output_shapes": [
+          [
+            1,
+            1,
+            512,
+            640
+          ],
+          [
+            1,
+            1,
+            512,
+            640
+          ],
+          [
+            1,
+            1,
+            512,
+            640
+          ],
+          [
+            1,
+            1,
+            512,
+            640
+          ]
+        ],
+        "pretrained_checkpoint": "outputs/verification/pvhsd2025_1ch/runs/pretrain-smoke/best.pt",
+        "pretrained_checkpoint_sha256": "b11919c3f4f10ff6a51327e497faada338039f9a5d3c6822f5a13d6250c6513e",
+        "verification_runs": [
+          "outputs/verification/pvhsd2025_1ch/runs/pretrain-smoke",
+          "outputs/verification/pvhsd2025_1ch/runs/finetune-smoke"
+        ]
+      }
+    },
+    "cudnn_verification_only": {
+      "source": "outputs/verification/cudnn_backend/result.json",
+      "sha256": "0e34fb24d16a650868e4f32c5c1b119231ab413a8d34018e58997575b64ba355",
+      "result": {
+        "device": "cuda",
+        "torch_version": "2.11.0+cu128",
+        "cuda_version": "12.8",
+        "cudnn_version": 91900,
+        "cudnn_available": true,
+        "cudnn_enabled": true,
+        "cudnn_active": true,
+        "cudnn_benchmark": true,
+        "cudnn_deterministic": false,
+        "gpu": "NVIDIA L40S",
+        "physical_gpu_index": 1,
+        "input_shape": [
+          2,
+          1,
+          32,
+          32
+        ],
+        "output_shapes": [
+          [
+            2,
+            1,
+            32,
+            32
+          ],
+          [
+            2,
+            1,
+            32,
+            32
+          ],
+          [
+            2,
+            1,
+            32,
+            32
+          ],
+          [
+            2,
+            1,
+            32,
+            32
+          ]
+        ],
+        "finite_loss": true,
+        "backward_completed": true,
+        "cudnn_profiler_events": [
+          "CudnnBatchNormBackward0",
+          "aten::cudnn_batch_norm",
+          "aten::cudnn_batch_norm_backward",
+          "aten::cudnn_convolution",
+          "autograd::engine::evaluate_function: CudnnBatchNormBackward0"
+        ]
+      }
+    },
+    "frozen_state_verification": {
+      "source": "outputs/verification/finetuning_policy/freeze_runtime_audit.json",
+      "sha256": "fe86944b308f95a0e81416ecfb961f3ef8063d372f1814c85f628273fdc45cc2",
+      "result": {
+        "checked_frozen_state_tensors": 106,
+        "changed_frozen_state_tensors": [],
+        "frozen_policy": {
+          "mode": "freeze_modules",
+          "frozen_modules": [
+            "conv0_0",
+            "conv1_0",
+            "conv2_0"
+          ],
+          "frozen_running_stats": true,
+          "trainable_parameters": 4526878,
+          "frozen_parameters": 169690,
+          "total_parameters": 4696568
+        },
+        "best_metric": 3.9937520755297846e-05,
+        "best_epoch_raw": 2,
+        "last_epoch_raw": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+test top-100 threshold 1.66
+G02 modules 9094 above test-top100 thr 300 | frames 84
+G03 modules 318 above test-top100 thr 0 | frames 0
+G12 modules 747 above test-top100 thr 0 | frames 0

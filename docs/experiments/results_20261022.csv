@@ -1,0 +1,15 @@
+﻿run,status,epochs_recorded,best_epoch_raw,best_epoch_display,selection_metric,best_metric,saved_global_step,image_size,split_strategy,train_samples,validation_samples
+20261019_2305_dnanet-r18-c2-seed7-v1_solar-ir-dnanet-from-scratch,incomplete_saved_run,38,37,38,F1_TIoU,0.8783577883636341,4000,256,random_stratified,837,209
+20261019_2305_dnanet-r18-c2-seed7-v2_solar-ir-dnanet-from-scratch,config_only_no_training_evidence,0,,,F1_TIoU,,,256,group,,
+20261019_2305_dnanet-r18-c2-seed7-v3_solar-ir-dnanet-from-scratch,config_only_no_training_evidence,0,,,F1_TIoU,,,256,group,,
+20261019_2305_dnanet-r18-c2-seed7-v6_solar-ir-dnanet-from-scratch,complete,32,6,7,F1_TIoU,0.0007490854523928564,3328,256,group,831,215
+20261019_2305_dnanet-r18-c2-seed7-v7_solar-ir-dnanet-from-scratch,incomplete_saved_run,25,17,18,F1_TIoU,0.0005796177406638195,2700,256,group,831,215
+20261019_2305_dnanet-r18-c2-seed7-v8_solar-ir-dnanet-from-scratch,complete,30,4,5,F1_TIoU,0.007966161880729105,12480,"[640, 512]",group,831,215
+20261019_2305_dnanet-r18-c2-seed7-vˇ_solar-ir-dnanet-from-scratch,config_only_no_training_evidence,0,,,F1_TIoU,,,256,group,,
+20261019_2330_simple-unet-baseline-v2_solar-ir-polygon-mask-dnanet,incomplete_saved_run,21,0,1,F1_TIoU,8.615353326021973e-05,2200,256,,831,215
+20261019_2330_simple-unet-baseline_solar-ir-polygon-mask-dnanet,complete,32,6,7,F1_TIoU,0.00013873917547466852,3328,256,,831,215
+pvhsd-dnanet-1ch-pretrain,incomplete_saved_run,372,370,371,weak_mask_iou,0.5991364763539787,306200,"[640, 512]",,3284,739
+solar-ir-dnanet-1ch-pvhsd-finetune-cudnn,incomplete_saved_run,17,0,1,F1_TIoU,0.0,3519,"[640, 512]",group,831,215
+solar-ir-dnanet-1ch-pvhsd-finetune-cudnn-photo,complete,111,60,61,F1_TIoU,0.7497724981035706,23199,"[640, 512]",photo_stratified,838,208
+solar-ir-dnanet-pvhsd-group-freeze_early,complete,53,2,3,F1_TIoU,3.9937520755297846e-05,10971,"[640, 512]",group,831,215
+solar-ir-dnanet-pvhsd-group-full,incomplete_saved_run,8,0,1,F1_TIoU,0.0,1700,"[640, 512]",group,831,215

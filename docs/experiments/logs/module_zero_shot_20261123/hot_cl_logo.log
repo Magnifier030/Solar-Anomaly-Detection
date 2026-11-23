@@ -1,0 +1,23 @@
+40:    with torch.no_grad(): return lambda A: torch.cat([h(torch.tensor(A[i:i + 4096], device="cuda"))[1].detach() for i in range(0, len(A), 4096)]).cpu().numpy()
+G01 {'auc_cl': np.float64(0.982), 'auc_v3': np.float64(0.933), 'v3': (0.348, 2.5), 'zCL': (0.388, 2.5), 'v3+zCL': (0.609, 4.5), 'absCL': (0.424, -10.0), 'v3+absCL': (0.609, 3.0)}
+G02 {'auc_cl': np.float64(0.975), 'auc_v3': np.float64(0.99), 'v3': (0.598, 3.0), 'zCL': (0.409, 2.0), 'v3+zCL': (0.595, 4.5), 'absCL': (0.343, -10.0), 'v3+absCL': (0.606, 2.25)}
+G03 {'auc_cl': np.float64(0.99), 'auc_v3': np.float64(0.995), 'v3': (0.82, 3.0), 'zCL': (0.799, 1.75), 'v3+zCL': (0.845, 5.25), 'absCL': (0.605, -10.0), 'v3+absCL': (0.845, 3.0)}
+G04 {'auc_cl': np.float64(0.981), 'auc_v3': np.float64(0.981), 'v3': (0.119, 7.0), 'zCL': (0.027, 2.75), 'v3+zCL': (0.009, 12.0), 'absCL': (0.164, 1.0), 'v3+absCL': (0.009, 9.75)}
+  mean v3: 0.471
+  mean zCL: 0.406
+  mean v3+zCL: 0.514
+  mean absCL: 0.384
+  mean v3+absCL: 0.517
+saved _real REAL True
+G01 {'auc_cl': np.float64(0.769), 'auc_v3': np.float64(0.933), 'v3': (0.348, 2.5), 'zCL': (0.081, 1.75), 'v3+zCL': (0.458, 4.25), 'absCL': (0.075, -10.0), 'v3+absCL': (0.339, 2.25)}
+G02 {'auc_cl': np.float64(0.909), 'auc_v3': np.float64(0.99), 'v3': (0.598, 3.0), 'zCL': (0.225, 1.0), 'v3+zCL': (0.578, 3.5), 'absCL': (0.211, -10.0), 'v3+absCL': (0.599, 1.75)}
+G03 {'auc_cl': np.float64(0.994), 'auc_v3': np.float64(0.995), 'v3': (0.82, 3.0), 'zCL': (0.781, 1.25), 'v3+zCL': (0.845, 3.75), 'absCL': (0.641, -10.0), 'v3+absCL': (0.845, 2.0)}
+G04 {'auc_cl': np.float64(0.993), 'auc_v3': np.float64(0.981), 'v3': (0.119, 7.0), 'zCL': (0.826, 1.75), 'v3+zCL': (0.009, 11.75), 'absCL': (0.804, -10.0), 'v3+absCL': (0.009, 9.75)}
+  mean v3: 0.471
+  mean zCL: 0.478
+  mean v3+zCL: 0.473
+  mean absCL: 0.433
+  mean v3+absCL: 0.448
+saved _syn REAL False
+
+[exited with code 0]
